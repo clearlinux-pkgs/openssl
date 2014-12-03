@@ -1,0 +1,26 @@
+From 83314993ec4ad19052b89893562c3e7bd12c08fa Mon Sep 17 00:00:00 2001
+From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
+Date: Tue, 21 Apr 2015 08:41:34 -0700
+Subject: [PATCH] Load ca-certs from system location only.
+Organization: Intel Corporation (UK) Ltd. - Co. Reg. #1134945 - Pipers Way, Swindon SN3 1RJ
+
+---
+ crypto/cryptlib.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/crypto/cryptlib.h b/crypto/cryptlib.h
+index fba180a..a46f444 100644
+--- a/crypto/cryptlib.h
++++ b/crypto/cryptlib.h
+@@ -81,7 +81,7 @@ extern "C" {
+ 
+ # ifndef OPENSSL_SYS_VMS
+ #  define X509_CERT_AREA          OPENSSLDIR
+-#  define X509_CERT_DIR           OPENSSLDIR "/certs"
++#  define X509_CERT_DIR           "/usr/share/ca-certs"
+ #  define X509_CERT_FILE          OPENSSLDIR "/cert.pem"
+ #  define X509_PRIVATE_DIR        OPENSSLDIR "/private"
+ # else
+-- 
+2.1.0
+
