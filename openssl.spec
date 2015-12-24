@@ -1,6 +1,6 @@
 Name:           openssl
 Version:        1.0.2e
-Release:        36
+Release:        37
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
@@ -50,7 +50,7 @@ Secure Socket Layer.
 %patch4 -p1
 
 %build
-./config shared no-ssl enable-ec_nistp_64_gcc_128 zlib-dynamic no-rc4 no-ssl2 no-ssl3   \
+./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3   \
  --prefix=%{_prefix} \
  --openssldir=%{_sysconfdir}/ssl \
  --libdir=lib64
