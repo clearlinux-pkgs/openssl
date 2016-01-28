@@ -1,11 +1,11 @@
 Name:           openssl
-Version:        1.0.2e
+Version:        1.0.2f
 Release:        37
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
 Group:          libs/network
-Source0:        http://www.openssl.org/source/openssl-1.0.2e.tar.gz
+Source0:        http://www.openssl.org/source/openssl-1.0.2f.tar.gz
 BuildRequires:  zlib-dev
 
 Patch1: cflags.patch
