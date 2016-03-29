@@ -1,6 +1,6 @@
 Name:           openssl
 Version:        1.0.2g
-Release:        39
+Release:        40
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
@@ -50,6 +50,11 @@ Secure Socket Layer.
 %patch4 -p1
 
 %build
+export AR=gcc-ar
+export RANLIB=gcc-ranlib
+export CFLAGS="$CFLAGS -flto -ffunction-sections -fno-semantic-interposition -O3 -falign-functions=32 -falign-loops=32"
+export CXXFLAGS="$CXXFLAGS -flto -ffunction-sections -fno-semantic-interposition -O3 "
+
 ./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3   \
  --prefix=%{_prefix} \
  --openssldir=%{_sysconfdir}/ssl \
