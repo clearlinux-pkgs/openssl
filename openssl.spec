@@ -1,6 +1,6 @@
 Name:           openssl
 Version:        1.0.2g
-Release:        41
+Release:        42
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
@@ -76,7 +76,6 @@ export FCFLAGS="${FCFLAGS_GENERATE}"
  --libdir=lib64
 
 make depend
-make %{?_smp_mflags} || :
 make
 
 apps/openssl speed 
@@ -95,7 +94,7 @@ export FCFLAGS="${FCFLAGS_USE}"
 
 # parallel build is broken
 make depend
-make %{?_smp_mflags}
+make
 
 
 %install
