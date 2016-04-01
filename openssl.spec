@@ -1,6 +1,6 @@
 Name:           openssl
 Version:        1.0.2g
-Release:        40
+Release:        41
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
@@ -54,6 +54,39 @@ export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export CFLAGS="$CFLAGS -flto -ffunction-sections -fno-semantic-interposition -O3 -falign-functions=32 -falign-loops=32"
 export CXXFLAGS="$CXXFLAGS -flto -ffunction-sections -fno-semantic-interposition -O3 "
+export CXXFLAGS="$CXXFLAGS -fno-semantic-interposition -O3 -falign-functions=32 -flto "
+export CFLAGS_GENERATE="$CFLAGS -fprofile-generate -fprofile-dir=/tmp/pgo "
+export FCFLAGS_GENERATE="$FCFLAGS -fprofile-generate -fprofile-dir=/tmp/pgo "
+export FFLAGS_GENERATE="$FFLAGS -fprofile-generate -fprofile-dir=/tmp/pgo "
+export CXXFLAGS_GENERATE="$CXXFLAGS -fprofile-generate -fprofile-dir=/tmp/pgo "
+export CFLAGS_USE="$CFLAGS -fprofile-use -fprofile-dir=/tmp/pgo -fprofile-correction "
+export FCFLAGS_USE="$FCFLAGS -fprofile-use -fprofile-dir=/tmp/pgo -fprofile-correction "
+export FFLAGS_USE="$FFLAGS -fprofile-use -fprofile-dir=/tmp/pgo -fprofile-correction "
+export CXXFLAGS_USE="$CXXFLAGS -fprofile-use -fprofile-dir=/tmp/pgo -fprofile-correction "
+
+
+export CFLAGS="${CFLAGS_GENERATE}" 
+export CXXFLAGS="${CXXFLAGS_GENERATE}" 
+export FFLAGS="${FFLAGS_GENERATE}" 
+export FCFLAGS="${FCFLAGS_GENERATE}" 
+
+./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3   \
+ --prefix=%{_prefix} \
+ --openssldir=%{_sysconfdir}/ssl \
+ --libdir=lib64
+
+make depend
+make %{?_smp_mflags} || :
+make
+
+apps/openssl speed 
+
+make clean
+
+export CFLAGS="${CFLAGS_USE}" 
+export CXXFLAGS="${CXXFLAGS_USE}" 
+export FFLAGS="${FFLAGS_USE}" 
+export FCFLAGS="${FCFLAGS_USE}" 
 
 ./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3   \
  --prefix=%{_prefix} \
@@ -63,6 +96,7 @@ export CXXFLAGS="$CXXFLAGS -flto -ffunction-sections -fno-semantic-interposition
 # parallel build is broken
 make depend
 make %{?_smp_mflags}
+
 
 %install
 make  INSTALL_PREFIX=%{buildroot} MANDIR=%{_mandir} MANSUFFIX=openssl install
