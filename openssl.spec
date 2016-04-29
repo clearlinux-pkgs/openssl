@@ -1,6 +1,6 @@
 Name:           openssl
 Version:        1.0.2g
-Release:        42
+Release:        43
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
