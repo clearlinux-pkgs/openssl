@@ -12,6 +12,7 @@ Patch1: cflags.patch
 Patch2: nodes.patch
 Patch3: 0001-Remove-warning-in-non-fatal-absence-of-etc-ssl-opens.patch 
 Patch4: 0001-Load-ca-certs-from-system-location-only.patch
+Patch5: 0001-Make-openssl-stateless-configuration.patch
 
 %description
 Secure Socket Layer.
@@ -48,6 +49,7 @@ Secure Socket Layer.
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
 
 %build
 export AR=gcc-ar
@@ -73,6 +75,7 @@ export FCFLAGS="${FCFLAGS_GENERATE}"
 ./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3   \
  --prefix=%{_prefix} \
  --openssldir=%{_sysconfdir}/ssl \
+ --openssldir_defaults=/usr/share/defaults/ssl \
  --libdir=lib64
 
 make depend
@@ -113,6 +116,7 @@ make test
 %{_bindir}/openssl
 %{_bindir}/c_hash
 %{_libdir}/engines/*.so
+/usr/share/defaults/ssl/openssl.cnf
 
 %files lib
 %{_libdir}/libcrypto.so.1.0.0
