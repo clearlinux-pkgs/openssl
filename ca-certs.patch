@@ -1,0 +1,15 @@
+Index: openssl-1.0.2h/crypto/cryptlib.h
+===================================================================
+--- openssl-1.0.2h.orig/crypto/cryptlib.h	2016-05-03 13:44:42.000000000 +0000
++++ openssl-1.0.2h/crypto/cryptlib.h	2016-06-10 20:51:34.889099851 +0000
+@@ -81,8 +81,8 @@
+ 
+ # ifndef OPENSSL_SYS_VMS
+ #  define X509_CERT_AREA          OPENSSLDIR
+-#  define X509_CERT_DIR           OPENSSLDIR "/certs"
+-#  define X509_CERT_FILE          OPENSSLDIR "/cert.pem"
++#  define X509_CERT_DIR           "/var/cache/ca-certs/extracted/openssl"
++#  define X509_CERT_FILE          X509_CERT_DIR "/ca-bundle.trust.pem"
+ #  define X509_PRIVATE_DIR        OPENSSLDIR "/private"
+ # else
+ #  define X509_CERT_AREA          "SSLROOT:[000000]"

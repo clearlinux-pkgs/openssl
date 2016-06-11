@@ -1,18 +1,19 @@
 Name:           openssl
 Version:        1.0.2h
-Release:        45
+Release:        46
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
 Group:          libs/network
 Source0:        http://www.openssl.org/source/openssl-1.0.2h.tar.gz
 BuildRequires:  zlib-dev
+Requires:       p11-kit
 
 Patch1: cflags.patch
 Patch2: nodes.patch
 Patch3: 0001-Remove-warning-in-non-fatal-absence-of-etc-ssl-opens.patch 
-Patch4: 0001-Load-ca-certs-from-system-location-only.patch
-Patch5: 0001-Make-openssl-stateless-configuration.patch
+Patch4: 0001-Make-openssl-stateless-configuration.patch
+Patch5: ca-certs.patch
 
 %description
 Secure Socket Layer.
@@ -74,7 +75,7 @@ export FCFLAGS="${FCFLAGS_GENERATE}"
 
 ./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3   \
  --prefix=%{_prefix} \
- --openssldir=%{_sysconfdir}/ssl \
+ --openssldir=%{_localstatedir}/cache/ca-certs/extracted/openssl \
  --openssldir_defaults=/usr/share/defaults/ssl \
  --libdir=lib64
 
@@ -92,7 +93,8 @@ export FCFLAGS="${FCFLAGS_USE}"
 
 ./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3   \
  --prefix=%{_prefix} \
- --openssldir=%{_sysconfdir}/ssl \
+ --openssldir=%{_localstatedir}/cache/ca-certs/extracted/openssl \
+ --openssldir_defaults=/usr/share/defaults/ssl \
  --libdir=lib64
 
 # parallel build is broken
@@ -103,8 +105,9 @@ make
 %install
 make  INSTALL_PREFIX=%{buildroot} MANDIR=%{_mandir} MANSUFFIX=openssl install
 
-mv %{buildroot}%{_sysconfdir}/ssl/misc/c_hash %{buildroot}%{_bindir}/c_hash
-
+mv %{buildroot}%{_localstatedir}/cache/ca-certs/extracted/openssl/misc/c_hash %{buildroot}%{_bindir}/c_hash
+rm -rf %{buildroot}%{_localstatedir}/cache/ca-certs/extracted/openssl/misc/
+mv %{buildroot}%{_localstatedir}/cache/ca-certs/extracted/openssl/openssl.cnf %{buildroot}/usr/share/defaults/ssl/openssl.cnf
 rm -rf %{buildroot}%{_sysconfdir}
 rm -rf %{buildroot}%{_libdir}/*.a
 
