@@ -1,6 +1,6 @@
 Name:           openssl
 Version:        1.0.2h
-Release:        47
+Release:        48
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
@@ -15,6 +15,7 @@ Patch3: 0001-Remove-warning-in-non-fatal-absence-of-etc-ssl-opens.patch
 Patch4: 0001-Make-openssl-stateless-configuration.patch
 Patch5: ca-certs.patch
 Patch6: cve-2016-2177.patch
+Patch7: cve-2016-2178.patch
 
 %description
 Secure Socket Layer.
@@ -53,6 +54,7 @@ Secure Socket Layer.
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
+%patch7 -p1
 
 %build
 export AR=gcc-ar
