@@ -1,6 +1,6 @@
 Name:           openssl
 Version:        1.0.2h
-Release:        48
+Release:        49
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
@@ -16,6 +16,7 @@ Patch4: 0001-Make-openssl-stateless-configuration.patch
 Patch5: ca-certs.patch
 Patch6: cve-2016-2177.patch
 Patch7: cve-2016-2178.patch
+Patch8: cve-2016-2180.patch
 
 %description
 Secure Socket Layer.
@@ -55,6 +56,7 @@ Secure Socket Layer.
 %patch5 -p1
 %patch6 -p1
 %patch7 -p1
+%patch8 -p1
 
 %build
 export AR=gcc-ar
