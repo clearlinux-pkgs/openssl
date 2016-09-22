@@ -1,8 +1,17 @@
-Index: openssl-1.0.2h/crypto/cryptlib.h
-===================================================================
---- openssl-1.0.2h.orig/crypto/cryptlib.h	2016-05-03 13:44:42.000000000 +0000
-+++ openssl-1.0.2h/crypto/cryptlib.h	2016-06-10 20:51:34.889099851 +0000
-@@ -81,8 +81,8 @@
+From f6dcfdd21aa7850182fe845d0f9d4ec44999951f Mon Sep 17 00:00:00 2001
+From: Auke Kok <auke-jan.h.kok@intel.com>
+Date: Thu, 22 Sep 2016 11:44:28 -0700
+Subject: [PATCH 5/6] Make openssl stateless.
+
+---
+ crypto/cryptlib.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/crypto/cryptlib.h b/crypto/cryptlib.h
+index fba180a..e339539 100644
+--- a/crypto/cryptlib.h
++++ b/crypto/cryptlib.h
+@@ -81,8 +81,8 @@ extern "C" {
  
  # ifndef OPENSSL_SYS_VMS
  #  define X509_CERT_AREA          OPENSSLDIR
@@ -13,3 +22,6 @@ Index: openssl-1.0.2h/crypto/cryptlib.h
  #  define X509_PRIVATE_DIR        OPENSSLDIR "/private"
  # else
  #  define X509_CERT_AREA          "SSLROOT:[000000]"
+-- 
+2.10.0
+

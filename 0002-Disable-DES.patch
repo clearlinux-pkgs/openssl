@@ -1,3 +1,15 @@
+From f850b461543d4916dcde91046792055c64fbb8f2 Mon Sep 17 00:00:00 2001
+From: Auke Kok <auke-jan.h.kok@intel.com>
+Date: Thu, 22 Sep 2016 11:41:27 -0700
+Subject: [PATCH 2/6] Disable DES.
+
+---
+ crypto/cms/cms_kari.c | 4 +---
+ ssl/ssl.h             | 2 +-
+ test/Makefile         | 2 +-
+ test/tests.com        | 8 +-------
+ 4 files changed, 4 insertions(+), 12 deletions(-)
+
 diff --git a/crypto/cms/cms_kari.c b/crypto/cms/cms_kari.c
 index 2cfcdb2..04c7723 100644
 --- a/crypto/cms/cms_kari.c
@@ -14,7 +26,7 @@ index 2cfcdb2..04c7723 100644
      else if (keylen <= 24)
          kekcipher = EVP_aes_192_wrap();
 diff --git a/ssl/ssl.h b/ssl/ssl.h
-index 04d4007..06d82e5 100644
+index 90aeb0c..03b814d 100644
 --- a/ssl/ssl.h
 +++ b/ssl/ssl.h
 @@ -338,7 +338,7 @@ extern "C" {
@@ -27,32 +39,32 @@ index 04d4007..06d82e5 100644
   * As of OpenSSL 1.0.0, ssl_create_cipher_list() in ssl/ssl_ciph.c always
   * starts with a reasonable order, and all we have to do for DEFAULT is
 diff --git a/test/Makefile b/test/Makefile
-index e566bab..b14bbf3 100644
+index 8f272ef..b201dfb 100644
 --- a/test/Makefile
 +++ b/test/Makefile
-@@ -152,7 +152,7 @@ alltests: \
+@@ -157,7 +157,7 @@ alltests: \
  	test_enc test_x509 test_rsa test_crl test_sid \
  	test_gen test_req test_pkcs7 test_verify test_dh test_dsa \
  	test_ss test_ca test_engine test_evp test_evp_extra test_ssl test_tsa test_ige \
 -	test_jpake test_srp test_cms test_ocsp test_v3name test_heartbeat \
 +	test_jpake test_srp test_ocsp test_v3name test_heartbeat \
- 	test_constant_time test_verify_extra test_clienthello test_sslv2conftest
+ 	test_constant_time test_verify_extra test_clienthello test_sslv2conftest \
+ 	test_dtls test_bad_dtls
  
- test_evp: $(EVPTEST)$(EXE_EXT) evptests.txt
 diff --git a/test/tests.com b/test/tests.com
-index 6e1c818..55a0f00 100644
+index 59745e1..6595d16 100644
 --- a/test/tests.com
 +++ b/test/tests.com
 @@ -56,7 +56,7 @@ $	    tests := -
  	test_enc,test_x509,test_rsa,test_crl,test_sid,-
  	test_gen,test_req,test_pkcs7,test_verify,test_dh,test_dsa,-
- 	test_ss,test_ca,test_engine,test_evp,test_ssl,test_tsa,test_ige,-
+ 	test_ss,test_ca,test_engine,test_evp,test_evp_extra,test_ssl,test_tsa,test_ige,-
 -	test_jpake,test_srp,test_cms,test_ocsp,test_v3name,test_heartbeat,-
 +	test_jpake,test_srp,test_ocsp,test_v3name,test_heartbeat,-
- 	test_constant_time
+ 	test_constant_time,test_verify_extra,test_clienthello,test_sslv2conftest,test_dtls
  $	endif
  $	tests = f$edit(tests,"COLLAPSE")
-@@ -360,12 +360,6 @@ $ test_jpake:
+@@ -368,12 +368,6 @@ $ test_jpake:
  $	write sys$output "Test JPAKE"
  $	mcr 'texe_dir''jpaketest'
  $	return
@@ -65,3 +77,6 @@ index 6e1c818..55a0f00 100644
  $ test_srp: 
  $	write sys$output "Test SRP"
  $	mcr 'texe_dir''srptest'
+-- 
+2.10.0
+

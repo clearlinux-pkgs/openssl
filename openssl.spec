@@ -1,22 +1,20 @@
 Name:           openssl
-Version:        1.0.2h
-Release:        49
+Version:        1.0.2i
+Release:        50
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
 Group:          libs/network
-Source0:        http://www.openssl.org/source/openssl-1.0.2h.tar.gz
+Source0:        http://www.openssl.org/source/openssl-1.0.2i.tar.gz
 BuildRequires:  zlib-dev
 Requires:       p11-kit
 
-Patch1: cflags.patch
-Patch2: nodes.patch
-Patch3: 0001-Remove-warning-in-non-fatal-absence-of-etc-ssl-opens.patch 
-Patch4: 0001-Make-openssl-stateless-configuration.patch
-Patch5: ca-certs.patch
-Patch6: cve-2016-2177.patch
-Patch7: cve-2016-2178.patch
-Patch8: cve-2016-2180.patch
+Patch1: 0001-Add-Clear-Linux-standard-CFLAGS.patch
+Patch2: 0002-Disable-DES.patch
+Patch3: 0003-Remove-warning-in-non-fatal-absence-of-etc-ssl-opens.patch
+Patch4: 0004-Make-openssl-stateless-configuration.patch
+Patch5: 0005-Make-openssl-stateless.patch
+Patch6: cve-2016-2178.patch
 
 %description
 Secure Socket Layer.
@@ -55,8 +53,6 @@ Secure Socket Layer.
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
-%patch7 -p1
-%patch8 -p1
 
 %build
 export AR=gcc-ar
