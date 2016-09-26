@@ -1,11 +1,11 @@
 Name:           openssl
-Version:        1.0.2i
-Release:        51
+Version:        1.0.2j
+Release:        52
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
 Group:          libs/network
-Source0:        http://www.openssl.org/source/openssl-1.0.2i.tar.gz
+Source0:        http://www.openssl.org/source/openssl-1.0.2j.tar.gz
 BuildRequires:  zlib-dev
 Requires:       p11-kit
 
