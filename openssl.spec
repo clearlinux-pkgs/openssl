@@ -115,8 +115,8 @@ export FCFLAGS="${FCFLAGS_GENERATE}"
 make depend
 make
 
-#apps/openssl speed 
-apps/openssl speed rsa
+apps/openssl speed 
+#apps/openssl speed rsa
 
 make clean
 
