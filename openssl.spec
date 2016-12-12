@@ -1,6 +1,6 @@
 Name:           openssl
 Version:        1.0.2j
-Release:        53
+Release:        54
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
@@ -59,7 +59,7 @@ License:        OpenSSL
 Summary:        Secure Socket Layer
 Group:          devel
 Requires:       %{name} = %{version}-%{release}
-Requires:       openssl-lib
+Requires:       openssl-lib32
 
 %description dev32
 Secure Socket Layer.
