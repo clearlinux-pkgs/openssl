@@ -1,6 +1,6 @@
 Name:           openssl
 Version:        1.0.2j
-Release:        54
+Release:        55
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
@@ -139,7 +139,7 @@ pushd ../build32
 export CFLAGS="$CFLAGS -m32 -fno-lto" 
 export LDFLAGS="$LDFLAGS -m32 -fno-lto" 
 export CXXFLAGS="$CXXFLAGS -m32 -fno-lto" 
-i386 ./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3   \
+i386 ./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3 no-asm  \
  --prefix=%{_prefix} \
  --openssldir=%{_localstatedir}/cache/ca-certs/extracted/openssl \
  --openssldir_defaults=/usr/share/defaults/ssl \
