@@ -1,6 +1,6 @@
 Name:           openssl
 Version:        1.0.2j
-Release:        55
+Release:        56
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
@@ -24,6 +24,8 @@ Patch3: 0003-Remove-warning-in-non-fatal-absence-of-etc-ssl-opens.patch
 Patch4: 0004-Make-openssl-stateless-configuration.patch
 Patch5: 0005-Make-openssl-stateless.patch
 Patch6: cve-2016-2178.patch
+# steam hack
+Patch7: hidden.patch
 
 %description
 Secure Socket Layer.
@@ -80,6 +82,7 @@ Secure Socket Layer.
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
+%patch7 -p1
 pushd ..
 cp -a openssl-1.0.2j build32
 popd
