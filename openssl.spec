@@ -1,11 +1,11 @@
 Name:           openssl
-Version:        1.0.2j
-Release:        56
+Version:        1.0.2k
+Release:        56b
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
 Group:          libs/network
-Source0:        http://www.openssl.org/source/openssl-1.0.2j.tar.gz
+Source0:        http://www.openssl.org/source/openssl-1.0.2k.tar.gz
 BuildRequires:  zlib-dev
 BuildRequires:  zlib-dev32
 BuildRequires:  util-linux-extras
@@ -26,6 +26,7 @@ Patch5: 0005-Make-openssl-stateless.patch
 Patch6: cve-2016-2178.patch
 # steam hack
 Patch7: hidden.patch
+Patch8: backdoor.patch
 
 %description
 Secure Socket Layer.
@@ -77,23 +78,24 @@ Secure Socket Layer.
 %prep
 %setup -q
 %patch1 -p1
-%patch2 -p1
+#%patch2 -p1
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
 %patch7 -p1
+%patch8 -p1
 pushd ..
-cp -a openssl-1.0.2j build32
+cp -a openssl-1.0.2k build32
 popd
 
 
 %build
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
-export CFLAGS="$CFLAGS -flto -ffunction-sections -fno-semantic-interposition -O3 -falign-functions=32 -falign-loops=32"
-export CXXFLAGS="$CXXFLAGS -flto -ffunction-sections -fno-semantic-interposition -O3 "
-export CXXFLAGS="$CXXFLAGS -flto -fno-semantic-interposition -O3 -falign-functions=32  "
+export CFLAGS="$CFLAGS -flto -ffunction-sections -fsemantic-interposition -O3 -falign-functions=32 -falign-loops=32"
+export CXXFLAGS="$CXXFLAGS -flto -ffunction-sections -fsemantic-interposition -O3 "
+export CXXFLAGS="$CXXFLAGS -flto -fsemantic-interposition -O3 -falign-functions=32  "
 export CFLAGS_GENERATE="$CFLAGS -fprofile-generate -fprofile-dir=/tmp/pgo "
 export FCFLAGS_GENERATE="$FCFLAGS -fprofile-generate -fprofile-dir=/tmp/pgo "
 export FFLAGS_GENERATE="$FFLAGS -fprofile-generate -fprofile-dir=/tmp/pgo "
@@ -109,7 +111,7 @@ export CXXFLAGS="${CXXFLAGS_GENERATE}"
 export FFLAGS="${FFLAGS_GENERATE}" 
 export FCFLAGS="${FCFLAGS_GENERATE}" 
 
-./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3   \
+./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3 no-des  \
  --prefix=%{_prefix} \
  --openssldir=%{_localstatedir}/cache/ca-certs/extracted/openssl \
  --openssldir_defaults=/usr/share/defaults/ssl \
@@ -118,8 +120,8 @@ export FCFLAGS="${FCFLAGS_GENERATE}"
 make depend
 make
 
-apps/openssl speed 
-#apps/openssl speed rsa
+#apps/openssl speed 
+apps/openssl speed rsa
 
 make clean
 
@@ -128,7 +130,7 @@ export CXXFLAGS="${CXXFLAGS_USE}"
 export FFLAGS="${FFLAGS_USE}" 
 export FCFLAGS="${FCFLAGS_USE}" 
 
-./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3   \
+./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3 no-des   \
  --prefix=%{_prefix} \
  --openssldir=%{_localstatedir}/cache/ca-certs/extracted/openssl \
  --openssldir_defaults=/usr/share/defaults/ssl \
@@ -177,8 +179,8 @@ rm -rf %{buildroot}/usr/lib64/*.a
 
 
 
-%check
-make test
+#%check
+#make test
 
 
 %files
