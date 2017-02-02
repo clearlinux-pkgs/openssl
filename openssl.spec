@@ -26,7 +26,6 @@ Patch5: 0005-Make-openssl-stateless.patch
 Patch6: cve-2016-2178.patch
 # steam hack
 Patch7: hidden.patch
-Patch8: backdoor.patch
 
 %description
 Secure Socket Layer.
@@ -84,7 +83,6 @@ Secure Socket Layer.
 %patch5 -p1
 %patch6 -p1
 %patch7 -p1
-%patch8 -p1
 pushd ..
 cp -a openssl-1.0.2k build32
 popd
