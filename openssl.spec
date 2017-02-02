@@ -109,7 +109,7 @@ export CXXFLAGS="${CXXFLAGS_GENERATE}"
 export FFLAGS="${FFLAGS_GENERATE}" 
 export FCFLAGS="${FCFLAGS_GENERATE}" 
 
-./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3 no-des  \
+./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3  \
  --prefix=%{_prefix} \
  --openssldir=%{_localstatedir}/cache/ca-certs/extracted/openssl \
  --openssldir_defaults=/usr/share/defaults/ssl \
