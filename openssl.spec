@@ -1,6 +1,6 @@
 Name:           openssl
 Version:        1.0.2k
-Release:        58
+Release:        59
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
@@ -128,7 +128,7 @@ export CXXFLAGS="${CXXFLAGS_USE}"
 export FFLAGS="${FFLAGS_USE}" 
 export FCFLAGS="${FCFLAGS_USE}" 
 
-./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3 no-des   \
+./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3    \
  --prefix=%{_prefix} \
  --openssldir=%{_localstatedir}/cache/ca-certs/extracted/openssl \
  --openssldir_defaults=/usr/share/defaults/ssl \
