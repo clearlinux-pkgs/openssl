@@ -1,7 +1,7 @@
-From 993c1344790d3eb5b5ad001f0d2772d4a4ded5a8 Mon Sep 17 00:00:00 2001
+From 60b9d78ae7347bcedaed4ef028db9a179dad9575 Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
 Date: Tue, 31 Mar 2015 15:47:05 +0100
-Subject: [PATCH 3/6] Remove warning in non-fatal absence of
+Subject: [PATCH 2/4] Remove warning in non-fatal absence of
  /etc/ssl/openssl.cnf
 
 Signed-off-by: Ikey Doherty <michael.i.doherty@intel.com>
@@ -22,5 +22,5 @@ index 6873145..1263b47 100644
              NCONF_free(config);
              config = NULL;
 -- 
-2.10.0
+2.11.1
 

@@ -1,24 +1,20 @@
-From 05b518ec918d4cb1d4d6a1cd5efba154fbb65a74 Mon Sep 17 00:00:00 2001
+From 97b77aa141ef2ecd33e61933d1093e22d9d410b3 Mon Sep 17 00:00:00 2001
 From: "Jaime A. Garcia" <jaime.garcia.naranjo@intel.com>
 Date: Thu, 2 Feb 2017 18:05:40 +0000
-Subject: [PATCH 4/6] Make openssl stateless configuration
+Subject: [PATCH 3/4] Make openssl stateless configuration
 
 Signed-off-by: Jaime A. Garcia <jaime.garcia.naranjo@intel.com>
 ---
-
- - Rebased for openssl 1.0.2k
-
-Signed-off-by: Ikey Doherty <michael.i.doherty@intel.com>
----
- Configure     | 32 +++++++++++++++++++++++++++++++-
- Makefile.org  |  9 +++++++--
- apps/Makefile |  1 +
- apps/apps.c   | 20 ++++++++++++++++++++
- e_os.h        |  1 +
- 5 files changed, 60 insertions(+), 3 deletions(-)
+ Configure         | 32 +++++++++++++++++++++++++++++++-
+ Makefile.org      |  9 +++++++--
+ apps/Makefile     |  1 +
+ apps/apps.c       | 20 ++++++++++++++++++++
+ crypto/cryptlib.h |  4 ++--
+ e_os.h            |  1 +
+ 6 files changed, 62 insertions(+), 5 deletions(-)
 
 diff --git a/Configure b/Configure
-index 5da7cad..1d93848 100755
+index 4dcea1a..f150c90 100755
 --- a/Configure
 +++ b/Configure
 @@ -11,12 +11,14 @@ use File::Compare;
@@ -80,10 +76,10 @@ index 5da7cad..1d93848 100755
  	s/^LIBDIR=.*$/LIBDIR=$libdir/;
  	s/^INSTALL_PREFIX=.*$/INSTALL_PREFIX=$install_prefix/;
  	s/^PLATFORM=.*$/PLATFORM=$target/;
-@@ -1990,6 +2000,26 @@ while (<IN>)
- 	else
- 		{ print OUT $_; }
- 	}
+@@ -1995,6 +2005,26 @@ print OUT "#ifdef  __cplusplus\n";
+ print OUT "}\n";
+ print OUT "#endif\n";
+ close(OUT);
 +# Include defaults dir
 +open(IN,'<e_os.h') || die "unable to read e_os.h:$!\n";
 +unlink("e_os.h.new") || die "unable to remove old e_os.h.new:$!\n" if -e "e_os.h.new";
@@ -104,9 +100,9 @@ index 5da7cad..1d93848 100755
 +close(OUT);
 +rename("e_os.h","e_os.h.bak") || die "unable to rename e_os.h\n" if -e "e_os.h";
 +rename("e_os.h.new","e_os.h") || die "unable to rename e_os.h.new\n";
- close(IN);
- print OUT "#ifdef  __cplusplus\n";
- print OUT "}\n";
+ if (compare("crypto/opensslconf.h.new","crypto/opensslconf.h"))
+ 	{
+ 	rename("crypto/opensslconf.h","crypto/opensslconf.h.bak") || die "unable to rename crypto/opensslconf.h\n" if -e "crypto/opensslconf.h";
 diff --git a/Makefile.org b/Makefile.org
 index 61a329b..39fd641 100644
 --- a/Makefile.org
@@ -205,6 +201,21 @@ index c487bd9..d1b8bcb 100644
      return p;
  }
  
+diff --git a/crypto/cryptlib.h b/crypto/cryptlib.h
+index fba180a..e339539 100644
+--- a/crypto/cryptlib.h
++++ b/crypto/cryptlib.h
+@@ -81,8 +81,8 @@ extern "C" {
+ 
+ # ifndef OPENSSL_SYS_VMS
+ #  define X509_CERT_AREA          OPENSSLDIR
+-#  define X509_CERT_DIR           OPENSSLDIR "/certs"
+-#  define X509_CERT_FILE          OPENSSLDIR "/cert.pem"
++#  define X509_CERT_DIR           "/var/cache/ca-certs/extracted/openssl"
++#  define X509_CERT_FILE          X509_CERT_DIR "/ca-bundle.trust.pem"
+ #  define X509_PRIVATE_DIR        OPENSSLDIR "/private"
+ # else
+ #  define X509_CERT_AREA          "SSLROOT:[000000]"
 diff --git a/e_os.h b/e_os.h
 index 1fa36c1..9d63a8b 100644
 --- a/e_os.h
@@ -218,5 +229,5 @@ index 1fa36c1..9d63a8b 100644
  #   define SSLEAY_CONF         OPENSSL_CONF
  #   define RFILE               ".rnd"
 -- 
-2.11.0
+2.11.1
 

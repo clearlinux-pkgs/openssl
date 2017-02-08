@@ -1,6 +1,6 @@
 Name:           openssl
 Version:        1.0.2k
-Release:        60
+Release:        61
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
@@ -19,13 +19,10 @@ BuildRequires:  glibc-libc32
 Requires:       p11-kit
 
 Patch1: 0001-Add-Clear-Linux-standard-CFLAGS.patch
-Patch2: 0002-Disable-DES.patch
-Patch3: 0003-Remove-warning-in-non-fatal-absence-of-etc-ssl-opens.patch
-Patch4: 0004-Make-openssl-stateless-configuration.patch
-Patch5: 0005-Make-openssl-stateless.patch
-Patch6: cve-2016-2178.patch
-# steam hack
-Patch7: hidden.patch
+Patch2: 0002-Remove-warning-in-non-fatal-absence-of-etc-ssl-opens.patch
+Patch3: 0003-Make-openssl-stateless-configuration.patch
+Patch4: 0004-Hide-a-symbol-from-Steam.patch
+Patch5: cve-2016-2178.patch
 
 %description
 Secure Socket Layer.
@@ -77,12 +74,10 @@ Secure Socket Layer.
 %prep
 %setup -q
 %patch1 -p1
-#%patch2 -p1
+%patch2 -p1
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
-%patch6 -p1
-%patch7 -p1
 pushd ..
 cp -a openssl-1.0.2k build32
 popd
