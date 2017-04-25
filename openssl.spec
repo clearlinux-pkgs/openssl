@@ -1,6 +1,6 @@
 Name:           openssl
 Version:        1.0.2k
-Release:        61
+Release:        62
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
@@ -31,6 +31,7 @@ Secure Socket Layer.
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Group:          libs/network
+Requires:       p11-kit
 
 %description lib
 Secure Socket Layer.
