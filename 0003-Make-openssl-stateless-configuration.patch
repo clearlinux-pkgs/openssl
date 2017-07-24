@@ -134,7 +134,7 @@ index 61a329b..39fd641 100644
  	@set -e; target=clean; $(RECURSIVE_BUILD_CMD)
  	rm -f $(LIBS)
  	rm -f openssl.pc libssl.pc libcrypto.pc
-@@ -542,7 +546,8 @@ install_sw:
+@@ -550,7 +554,8 @@ install_sw:
  		$(INSTALL_PREFIX)$(INSTALLTOP)/include/openssl \
  		$(INSTALL_PREFIX)$(OPENSSLDIR)/misc \
  		$(INSTALL_PREFIX)$(OPENSSLDIR)/certs \
