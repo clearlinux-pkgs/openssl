@@ -1,6 +1,6 @@
 Name:           openssl
 Version:        1.0.2l
-Release:        64
+Release:        65
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
@@ -107,7 +107,7 @@ export FCFLAGS="${FCFLAGS_GENERATE}"
 
 ./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3  \
  --prefix=%{_prefix} \
- --openssldir=%{_localstatedir}/cache/ca-certs/extracted/openssl \
+ --openssldir=/etc/ssl \
  --openssldir_defaults=/usr/share/defaults/ssl \
  --libdir=lib64
 
@@ -124,9 +124,9 @@ export CXXFLAGS="${CXXFLAGS_USE}"
 export FFLAGS="${FFLAGS_USE}" 
 export FCFLAGS="${FCFLAGS_USE}" 
 
-./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3    \
+./config shared no-ssl zlib-dynamic no-rc4 no-des no-ssl2 no-ssl3    \
  --prefix=%{_prefix} \
- --openssldir=%{_localstatedir}/cache/ca-certs/extracted/openssl \
+ --openssldir=/etc/ssl \
  --openssldir_defaults=/usr/share/defaults/ssl \
  --libdir=lib64
 
@@ -138,9 +138,9 @@ pushd ../build32
 export CFLAGS="$CFLAGS -m32 -fno-lto" 
 export LDFLAGS="$LDFLAGS -m32 -fno-lto" 
 export CXXFLAGS="$CXXFLAGS -m32 -fno-lto" 
-i386 ./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3 no-asm  \
+i386 ./config shared no-ssl zlib-dynamic no-rc4 no-des no-ssl2 no-ssl3 no-asm  \
  --prefix=%{_prefix} \
- --openssldir=%{_localstatedir}/cache/ca-certs/extracted/openssl \
+ --openssldir=/etc/ssl \
  --openssldir_defaults=/usr/share/defaults/ssl \
  --libdir=lib32 
 make depend
@@ -165,10 +165,9 @@ export CXXFLAGS="$CXXFLAGS -m64 -flto"
 
 make  INSTALL_PREFIX=%{buildroot} MANDIR=%{_mandir} MANSUFFIX=openssl install
 
-mv %{buildroot}%{_localstatedir}/cache/ca-certs/extracted/openssl/misc/c_hash %{buildroot}%{_bindir}/c_hash
-rm -rf %{buildroot}%{_localstatedir}/cache/ca-certs/extracted/openssl/misc/
-mv %{buildroot}%{_localstatedir}/cache/ca-certs/extracted/openssl/openssl.cnf %{buildroot}/usr/share/defaults/ssl/openssl.cnf
-rm -rf %{buildroot}%{_sysconfdir}
+mv %{buildroot}/etc/ssl/misc/c_hash %{buildroot}%{_bindir}/c_hash
+mv %{buildroot}/etc/ssl/openssl.cnf %{buildroot}/usr/share/defaults/ssl/openssl.cnf
+rm -rf %{buildroot}/etc/ssl
 rm -rf %{buildroot}/usr/lib64/*.a
 
 
