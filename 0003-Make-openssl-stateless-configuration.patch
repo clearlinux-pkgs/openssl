@@ -1,20 +1,20 @@
-From 97b77aa141ef2ecd33e61933d1093e22d9d410b3 Mon Sep 17 00:00:00 2001
+From 9ce17468696b746573cedb4c26073e92b4e048cb Mon Sep 17 00:00:00 2001
 From: "Jaime A. Garcia" <jaime.garcia.naranjo@intel.com>
 Date: Thu, 2 Feb 2017 18:05:40 +0000
-Subject: [PATCH 3/4] Make openssl stateless configuration
+Subject: [PATCH] Make openssl stateless configuration
 
 Signed-off-by: Jaime A. Garcia <jaime.garcia.naranjo@intel.com>
 ---
- Configure         | 32 +++++++++++++++++++++++++++++++-
+ Configure         | 31 ++++++++++++++++++++++++++++++-
  Makefile.org      |  9 +++++++--
  apps/Makefile     |  1 +
  apps/apps.c       | 20 ++++++++++++++++++++
- crypto/cryptlib.h |  4 ++--
+ crypto/cryptlib.h | 10 ++++++++--
  e_os.h            |  1 +
- 6 files changed, 62 insertions(+), 5 deletions(-)
+ 6 files changed, 67 insertions(+), 5 deletions(-)
 
 diff --git a/Configure b/Configure
-index 4dcea1a..f150c90 100755
+index b00bf2771b..640912d0d0 100755
 --- a/Configure
 +++ b/Configure
 @@ -11,12 +11,14 @@ use File::Compare;
@@ -76,7 +76,7 @@ index 4dcea1a..f150c90 100755
  	s/^LIBDIR=.*$/LIBDIR=$libdir/;
  	s/^INSTALL_PREFIX=.*$/INSTALL_PREFIX=$install_prefix/;
  	s/^PLATFORM=.*$/PLATFORM=$target/;
-@@ -1995,6 +2005,26 @@ print OUT "#ifdef  __cplusplus\n";
+@@ -1995,6 +2005,25 @@ print OUT "#ifdef  __cplusplus\n";
  print OUT "}\n";
  print OUT "#endif\n";
  close(OUT);
@@ -87,14 +87,13 @@ index 4dcea1a..f150c90 100755
 +
 +while (<IN>)
 +	{
-+	if	(/^#define\s+OPENSSLDIR_DEFAULTS/)
++	if	(/^#\s*define\s+OPENSSLDIR_DEFAULTS/)
 +		{
 +		my $foo = $openssldir_defaults;
 +		$foo =~ s/\\/\\\\/g;
-+		print OUT "#define OPENSSLDIR_DEFAULTS \"$foo\"\n";
++		s/^(#\s*define\s+OPENSSLDIR_DEFAULTS\b).*$/$1 "$foo"/;
 +		}
-+	else
-+		{ print OUT $_; }
++	print OUT $_;
 +	}
 +close(IN);
 +close(OUT);
@@ -104,7 +103,7 @@ index 4dcea1a..f150c90 100755
  	{
  	rename("crypto/opensslconf.h","crypto/opensslconf.h.bak") || die "unable to rename crypto/opensslconf.h\n" if -e "crypto/opensslconf.h";
 diff --git a/Makefile.org b/Makefile.org
-index 61a329b..39fd641 100644
+index f51f0a756c..b689e69d6f 100644
 --- a/Makefile.org
 +++ b/Makefile.org
 @@ -29,6 +29,9 @@ INSTALLTOP=/usr/local/ssl
@@ -145,7 +144,7 @@ index 61a329b..39fd641 100644
  	do \
  	(cp $$i $(INSTALL_PREFIX)$(INSTALLTOP)/include/openssl/$$i; \
 diff --git a/apps/Makefile b/apps/Makefile
-index 8c3297e..913798d 100644
+index 8c3297ea67..913798da8a 100644
 --- a/apps/Makefile
 +++ b/apps/Makefile
 @@ -119,6 +119,7 @@ install:
@@ -157,7 +156,7 @@ index 8c3297e..913798d 100644
  tags:
  	ctags $(SRC)
 diff --git a/apps/apps.c b/apps/apps.c
-index c487bd9..d1b8bcb 100644
+index c487bd92db..d1b8bcbdb2 100644
 --- a/apps/apps.c
 +++ b/apps/apps.c
 @@ -120,6 +120,8 @@
@@ -202,32 +201,38 @@ index c487bd9..d1b8bcb 100644
  }
  
 diff --git a/crypto/cryptlib.h b/crypto/cryptlib.h
-index fba180a..e339539 100644
+index fba180a6b2..0017514b68 100644
 --- a/crypto/cryptlib.h
 +++ b/crypto/cryptlib.h
-@@ -81,8 +81,8 @@ extern "C" {
+@@ -81,8 +81,14 @@ extern "C" {
  
  # ifndef OPENSSL_SYS_VMS
  #  define X509_CERT_AREA          OPENSSLDIR
 -#  define X509_CERT_DIR           OPENSSLDIR "/certs"
 -#  define X509_CERT_FILE          OPENSSLDIR "/cert.pem"
-+#  define X509_CERT_DIR           "/var/cache/ca-certs/extracted/openssl"
-+#  define X509_CERT_FILE          X509_CERT_DIR "/ca-bundle.trust.pem"
++/* We must leave the X509_CERT_AREA intact since it's used in many places to
++ * build path to the configuration file (as opposed to the CA certificates as
++ * its name suggests) via X509_get_default_cert_area(). For certificates, we use
++ * CLR_X509_CERT_AREA macro.
++ */
++#  define CLR_X509_CERT_AREA      "/var/cache/ca-certs"
++#  define X509_CERT_DIR           CLR_X509_CERT_AREA "/anchors"
++#  define X509_CERT_FILE          CLR_X509_CERT_AREA "/compat/ca-roots.pem"
  #  define X509_PRIVATE_DIR        OPENSSLDIR "/private"
  # else
  #  define X509_CERT_AREA          "SSLROOT:[000000]"
 diff --git a/e_os.h b/e_os.h
-index 1fa36c1..9d63a8b 100644
+index 1fa36c1719..3362dad73f 100644
 --- a/e_os.h
 +++ b/e_os.h
 @@ -487,6 +487,7 @@ typedef unsigned long clock_t;
  #    include <fcntl.h>
  #   endif
  
-+#define OPENSSLDIR_DEFAULTS "/usr/share/defaults/ssl"
++#   define OPENSSLDIR_DEFAULTS "PLACEHOLDER"
  #   define OPENSSL_CONF        "openssl.cnf"
  #   define SSLEAY_CONF         OPENSSL_CONF
  #   define RFILE               ".rnd"
 -- 
-2.11.1
+2.13.2
 
