@@ -1,6 +1,6 @@
 Name:           openssl
 Version:        1.0.2l
-Release:        66
+Release:        67
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
@@ -115,7 +115,7 @@ make depend
 make
 
 #apps/openssl speed 
-apps/openssl speed rsa
+LD_PRELOAD="./libcrypto.so ./libssl.so" apps/openssl speed rsa
 
 make clean
 
