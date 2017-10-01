@@ -1,6 +1,6 @@
 Name:           openssl
 Version:        1.0.2l
-Release:        68
+Release:        69
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
@@ -44,6 +44,16 @@ Requires:       %{name} = %{version}-%{release}
 Requires:       openssl-lib
 
 %description dev
+Secure Socket Layer.
+
+%package extras
+License:        OpenSSL
+Summary:        Secure Socket Layer
+Group:          devel
+Requires:       %{name} = %{version}-%{release}
+Requires:       openssl-lib
+
+%description extras
 Secure Socket Layer.
 
 %package lib32
@@ -153,7 +163,7 @@ pushd ../build32
 export CFLAGS="$CFLAGS -m32 -fno-lto" 
 export LDFLAGS="$LDFLAGS -m32 -fno-lto" 
 export CXXFLAGS="$CXXFLAGS -m32 -fno-lto" 
-make  INSTALL_PREFIX=%{buildroot} MANDIR=%{_mandir} MANSUFFIX=openssl install
+make  INSTALL_PREFIX=%{buildroot} MANDIR=/usr/share/man MANSUFFIX=openssl install
 pushd %{buildroot}/usr/lib32/pkgconfig
 for i in *.pc ; do mv $i 32$i ; done
 popd
@@ -163,9 +173,9 @@ export CFLAGS="$CFLAGS -m64 -flto"
 export LDFLAGS="$LDFLAGS -m64 -flto" 
 export CXXFLAGS="$CXXFLAGS -m64 -flto" 
 
-make  INSTALL_PREFIX=%{buildroot} MANDIR=%{_mandir} MANSUFFIX=openssl install
+make  INSTALL_PREFIX=%{buildroot} MANDIR=/usr/share/man MANSUFFIX=openssl install
 
-mv %{buildroot}/etc/ssl/misc/c_hash %{buildroot}%{_bindir}/c_hash
+mv %{buildroot}/etc/ssl/misc/c_hash %{buildroot}/usr/bin/c_hash
 mv %{buildroot}/etc/ssl/openssl.cnf %{buildroot}/usr/share/defaults/ssl/openssl.cnf
 rm -rf %{buildroot}/etc/ssl
 rm -rf %{buildroot}/usr/lib64/*.a
@@ -177,8 +187,8 @@ rm -rf %{buildroot}/usr/lib64/*.a
 
 
 %files
-%{_bindir}/openssl
-%{_bindir}/c_hash
+/usr/bin/openssl
+/usr/bin/c_hash
 /usr/lib64/engines/*.so
 /usr/share/defaults/ssl/openssl.cnf
 
@@ -209,7 +219,9 @@ rm -rf %{buildroot}/usr/lib64/*.a
 /usr/lib64/pkgconfig/libcrypto.pc
 /usr/lib64/pkgconfig/libssl.pc
 /usr/lib64/pkgconfig/openssl.pc
-%{_bindir}/c_rehash
+
+%files extras
+/usr/bin/c_rehash
 
 %files dev32
 /usr/lib32/libcrypto.so
@@ -221,7 +233,7 @@ rm -rf %{buildroot}/usr/lib64/*.a
 /usr/lib32/libssl.a
 
 %files doc
-%{_mandir}/man1/*
-%{_mandir}/man3/*
-%{_mandir}/man5/*
-%{_mandir}/man7/*
+/usr/share/man/man1/*
+/usr/share/man/man3/*
+/usr/share/man/man5/*
+/usr/share/man/man7/*
