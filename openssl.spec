@@ -98,9 +98,9 @@ popd
 %build
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
-export CFLAGS="$CFLAGS -flto -ffunction-sections -fsemantic-interposition -O3 -falign-functions=32 -falign-loops=32"
-export CXXFLAGS="$CXXFLAGS -flto -ffunction-sections -fsemantic-interposition -O3 "
-export CXXFLAGS="$CXXFLAGS -flto -fsemantic-interposition -O3 -falign-functions=32  "
+export CFLAGS="$CFLAGS -flto=8 -ffunction-sections -fsemantic-interposition -O3 -falign-functions=32 -falign-loops=32"
+export CXXFLAGS="$CXXFLAGS -flto=8 -ffunction-sections -fsemantic-interposition -O3 "
+export CXXFLAGS="$CXXFLAGS -flto=8 -fsemantic-interposition -O3 -falign-functions=32  "
 export CFLAGS_GENERATE="$CFLAGS -fprofile-generate -fprofile-dir=/tmp/pgo "
 export FCFLAGS_GENERATE="$FCFLAGS -fprofile-generate -fprofile-dir=/tmp/pgo "
 export FFLAGS_GENERATE="$FFLAGS -fprofile-generate -fprofile-dir=/tmp/pgo "
@@ -183,8 +183,8 @@ rm -rf %{buildroot}/usr/lib64/*.a
 
 
 
-#%check
-#make test
+%check
+make test
 
 
 %files
