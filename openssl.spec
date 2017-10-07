@@ -1,6 +1,6 @@
 Name:           openssl
 Version:        1.0.2l
-Release:        69
+Release:        70
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
@@ -52,6 +52,7 @@ Summary:        Secure Socket Layer
 Group:          devel
 Requires:       %{name} = %{version}-%{release}
 Requires:       openssl-lib
+Requires:	c_rehash
 
 %description extras
 Secure Socket Layer.
@@ -221,7 +222,7 @@ rm -rf %{buildroot}/usr/lib64/*.a
 /usr/lib64/pkgconfig/openssl.pc
 
 %files extras
-/usr/bin/c_rehash
+%exclude /usr/bin/c_rehash
 
 %files dev32
 /usr/lib32/libcrypto.so
