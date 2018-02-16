@@ -1,6 +1,6 @@
 Name:           openssl
 Version:        1.0.2n
-Release:        73
+Release:        74
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
@@ -16,6 +16,7 @@ BuildRequires:  gcc-libstdc++32
 BuildRequires:  glibc-dev32
 BuildRequires:  glibc-libc32
 
+Requires:       ca-certs
 Requires:       p11-kit
 
 Patch1: 0001-Add-Clear-Linux-standard-CFLAGS.patch
