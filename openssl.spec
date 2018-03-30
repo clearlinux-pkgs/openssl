@@ -1,11 +1,11 @@
 Name:           openssl
-Version:        1.0.2n
+Version:        1.0.2o
 Release:        74
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
 Group:          libs/network
-Source0:        http://www.openssl.org/source/openssl-1.0.2n.tar.gz
+Source0:        http://www.openssl.org/source/openssl-1.0.2o.tar.gz
 BuildRequires:  zlib-dev
 BuildRequires:  zlib-dev32
 BuildRequires:  util-linux-extras
@@ -92,7 +92,7 @@ Secure Socket Layer.
 %patch4 -p1
 %patch5 -p1
 pushd ..
-cp -a openssl-1.0.2n build32
+cp -a openssl-1.0.2o build32
 popd
 
 
