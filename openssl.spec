@@ -1,6 +1,6 @@
 Name:           openssl
 Version:        1.0.2p
-Release:        75
+Release:        76
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
@@ -24,6 +24,7 @@ Patch2: 0002-Remove-warning-in-non-fatal-absence-of-etc-ssl-opens.patch
 Patch3: 0003-Make-openssl-stateless-configuration.patch
 Patch4: 0004-Hide-a-symbol-from-Steam.patch
 Patch5: cve-2016-2178.patch
+Patch6: CVE-2018-0734.patch
 
 %description
 Secure Socket Layer.
@@ -91,6 +92,7 @@ Secure Socket Layer.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
 pushd ..
 cp -a openssl-1.0.2p build32
 popd
