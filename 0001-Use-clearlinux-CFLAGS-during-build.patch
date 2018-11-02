@@ -1,0 +1,32 @@
+From 2ed45c99766a489d7a0adf476f56148c4c7cee95 Mon Sep 17 00:00:00 2001
+From: Auke Kok <auke-jan.h.kok@intel.com>
+Date: Mon, 22 Oct 2018 13:27:06 -0700
+Subject: [PATCH] Use clearlinux CFLAGS during build.
+
+---
+ Configurations/10-main.conf | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/Configurations/10-main.conf b/Configurations/10-main.conf
+index 5cf345d..fb1594c 100644
+--- a/Configurations/10-main.conf
++++ b/Configurations/10-main.conf
+@@ -657,6 +657,7 @@ my %targets = (
+     },
+     "linux-generic64" => {
+         inherit_from     => [ "linux-generic32" ],
++        CFLAGS           => add($ENV{'CFLAGS'}),
+         bn_ops           => "SIXTY_FOUR_BIT_LONG RC4_CHAR",
+     },
+ 
+@@ -761,6 +762,7 @@ my %targets = (
+     #### machines where gcc doesn't understand -m32 and -m64
+     "linux-elf" => {
+         inherit_from     => [ "linux-generic32", asm("x86_elf_asm") ],
++        CFLAGS           => add($ENV{'CFLAGS'}),
+         CFLAGS           => add(picker(release => "-fomit-frame-pointer")),
+         lib_cppflags     => add("-DL_ENDIAN"),
+         bn_ops           => "BN_LLONG",
+-- 
+2.19.1
+

@@ -1,0 +1,32 @@
+From d1f9957cf33b57336177263a911448cc2f9d1f92 Mon Sep 17 00:00:00 2001
+From: Auke Kok <auke-jan.h.kok@intel.com>
+Date: Sat, 3 Nov 2018 20:23:51 -0700
+Subject: [PATCH] Always read certificate from OS cache location.
+
+---
+ include/internal/cryptlib.h | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/include/internal/cryptlib.h b/include/internal/cryptlib.h
+index a608735..0a6ad7c 100644
+--- a/include/internal/cryptlib.h
++++ b/include/internal/cryptlib.h
+@@ -55,8 +55,13 @@ DEFINE_LHASH_OF(MEM);
+ 
+ # ifndef OPENSSL_SYS_VMS
+ #  define X509_CERT_AREA          OPENSSLDIR
+-#  define X509_CERT_DIR           OPENSSLDIR "/certs"
+-#  define X509_CERT_FILE          OPENSSLDIR "/cert.pem"
++/* Misleading, but the X509_CERT_AREA is used in places to fetch configs
++ * and should remain set to /etc/ssl. We modify the path to the cert
++ * areas instead to point to the cache location
++ */
++#  define CACHE_CERT_AREA         "/var/cache/ca-certs"
++#  define X509_CERT_DIR           CACHE_CERT_AREA "/certs"
++#  define X509_CERT_FILE          CACHE_CERT_AREA "/compat/ca-roots.pem"
+ #  define X509_PRIVATE_DIR        OPENSSLDIR "/private"
+ #  define CTLOG_FILE              OPENSSLDIR "/ct_log_list.cnf"
+ # else
+-- 
+2.19.1
+

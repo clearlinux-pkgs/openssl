@@ -1,11 +1,11 @@
 Name:           openssl
-Version:        1.0.2p
+Version:        1.1.1
 Release:        76
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
 Group:          libs/network
-Source0:        http://www.openssl.org/source/openssl-1.0.2p.tar.gz
+Source0:        http://www.openssl.org/source/openssl-1.1.1.tar.gz
 BuildRequires:  zlib-dev
 BuildRequires:  zlib-dev32
 BuildRequires:  util-linux-extras
@@ -19,12 +19,10 @@ BuildRequires:  glibc-libc32
 Requires:       ca-certs
 Requires:       p11-kit
 
-Patch1: 0001-Add-Clear-Linux-standard-CFLAGS.patch
-Patch2: 0002-Remove-warning-in-non-fatal-absence-of-etc-ssl-opens.patch
-Patch3: 0003-Make-openssl-stateless-configuration.patch
+Patch1: 0001-Use-clearlinux-CFLAGS-during-build.patch
+Patch2: 0002-Use-OS-provided-copy-of-openssl.cnf-as-fallback.patch
+Patch3: 0003-Always-read-certificate-from-OS-cache-location.patch
 Patch4: 0004-Hide-a-symbol-from-Steam.patch
-Patch5: cve-2016-2178.patch
-Patch6: CVE-2018-0734.patch
 
 %description
 Secure Socket Layer.
@@ -91,10 +89,8 @@ Secure Socket Layer.
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
-%patch5 -p1
-%patch6 -p1
 pushd ..
-cp -a openssl-1.0.2p build32
+cp -a openssl-1.1.1 build32
 popd
 
 
@@ -122,7 +118,6 @@ export FCFLAGS="${FCFLAGS_GENERATE}"
 ./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3  \
  --prefix=%{_prefix} \
  --openssldir=/etc/ssl \
- --openssldir_defaults=/usr/share/defaults/ssl \
  --libdir=lib64
 
 make depend
@@ -141,7 +136,6 @@ export FCFLAGS="${FCFLAGS_USE}"
 ./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3    \
  --prefix=%{_prefix} \
  --openssldir=/etc/ssl \
- --openssldir_defaults=/usr/share/defaults/ssl \
  --libdir=lib64
 
 # parallel build is broken
@@ -155,19 +149,17 @@ export CXXFLAGS="$CXXFLAGS -m32 -fno-lto"
 i386 ./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3 no-asm  \
  --prefix=%{_prefix} \
  --openssldir=/etc/ssl \
- --openssldir_defaults=/usr/share/defaults/ssl \
  --libdir=lib32 
 make depend
 make
 popd
-
 
 %install
 pushd ../build32
 export CFLAGS="$CFLAGS -m32 -fno-lto" 
 export LDFLAGS="$LDFLAGS -m32 -fno-lto" 
 export CXXFLAGS="$CXXFLAGS -m32 -fno-lto" 
-make  INSTALL_PREFIX=%{buildroot} MANDIR=/usr/share/man MANSUFFIX=openssl install
+make  DESTDIR=%{buildroot} MANDIR=/usr/share/man MANSUFFIX=openssl install
 pushd %{buildroot}/usr/lib32/pkgconfig
 for i in *.pc ; do mv $i 32$i ; done
 popd
@@ -176,45 +168,33 @@ popd
 export CFLAGS="$CFLAGS -m64 -flto" 
 export LDFLAGS="$LDFLAGS -m64 -flto" 
 export CXXFLAGS="$CXXFLAGS -m64 -flto" 
+make  DESTDIR=%{buildroot} MANDIR=/usr/share/man MANSUFFIX=openssl install
 
-make  INSTALL_PREFIX=%{buildroot} MANDIR=/usr/share/man MANSUFFIX=openssl install
-
-mv %{buildroot}/etc/ssl/misc/c_hash %{buildroot}/usr/bin/c_hash
-mv %{buildroot}/etc/ssl/openssl.cnf %{buildroot}/usr/share/defaults/ssl/openssl.cnf
+install -D -m0644 apps/openssl.cnf %{buildroot}/usr/share/defaults/ssl/openssl.cnf
 rm -rf %{buildroot}/etc/ssl
 rm -rf %{buildroot}/usr/lib64/*.a
-
-
+rm -rf %{buildroot}/usr/share/doc/openssl/html
 
 %check
 make test
 
-
 %files
 /usr/bin/openssl
-/usr/bin/c_hash
-/usr/lib64/engines/*.so
 /usr/share/defaults/ssl/openssl.cnf
 
 %files lib
-/usr/lib64/libcrypto.so.1.0.0
-/usr/lib64/libssl.so.1.0.0
+/usr/lib64/libcrypto.so.1.1
+/usr/lib64/libssl.so.1.1
+/usr/lib64/engines-1.1/afalg.so
+/usr/lib64/engines-1.1/capi.so
+/usr/lib64/engines-1.1/padlock.so
 
 %files lib32
-/usr/lib32/libcrypto.so.1.0.0
-/usr/lib32/libssl.so.1.0.0
-/usr/lib32/engines/lib4758cca.so
-/usr/lib32/engines/libaep.so
-/usr/lib32/engines/libatalla.so
-/usr/lib32/engines/libcapi.so
-/usr/lib32/engines/libchil.so
-/usr/lib32/engines/libcswift.so
-/usr/lib32/engines/libgmp.so
-/usr/lib32/engines/libgost.so
-/usr/lib32/engines/libnuron.so
-/usr/lib32/engines/libpadlock.so
-/usr/lib32/engines/libsureware.so
-/usr/lib32/engines/libubsec.so
+/usr/lib32/libcrypto.so.1.1
+/usr/lib32/libssl.so.1.1
+/usr/lib32/engines-1.1/afalg.so
+/usr/lib32/engines-1.1/capi.so
+/usr/lib32/engines-1.1/padlock.so
 
 %files dev
 /usr/include/openssl/*.h
