@@ -23,6 +23,8 @@ Patch1: 0001-Use-clearlinux-CFLAGS-during-build.patch
 Patch2: 0002-Use-OS-provided-copy-of-openssl.cnf-as-fallback.patch
 Patch3: 0003-Always-read-certificate-from-OS-cache-location.patch
 Patch4: 0004-Hide-a-symbol-from-Steam.patch
+Patch5: CVE-2018-0734.patch
+Patch6: CVE-2018-0735.patch
 
 %description
 Secure Socket Layer.
@@ -89,6 +91,8 @@ Secure Socket Layer.
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
+%patch6 -p1
 pushd ..
 cp -a openssl-1.1.1 build32
 popd
