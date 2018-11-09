@@ -1,0 +1,69 @@
+From e6415a4e17aefd38cbc3e8ea60e24e59070a3d7c Mon Sep 17 00:00:00 2001
+From: Auke Kok <auke-jan.h.kok@intel.com>
+Date: Sat, 3 Nov 2018 20:00:42 -0700
+Subject: [PATCH 3/3] Use OS provided copy of openssl.cnf as fallback.
+
+This will be used only if OPENSSL_CONF is not set and if
+/etc/openssl.cnf is not found. If either one of those is the case, they
+will be used and create an error if there is something wrong with them.
+---
+ apps/apps.c                 | 3 +++
+ apps/openssl.c              | 7 ++++++-
+ include/internal/cryptlib.h | 9 +++++++--
+ 3 files changed, 16 insertions(+), 3 deletions(-)
+
+diff --git a/apps/apps.c b/apps/apps.c
+index 9be6560..b83f739 100644
+--- a/apps/apps.c
++++ b/apps/apps.c
+@@ -502,6 +502,9 @@ int app_load_modules(const CONF *config)
+ 
+     if (config == NULL)
+         config = to_free = app_load_config_quiet(default_config_file);
++    /* clearlinux: use OS defaults if no explicit or /etc/ cnf found */
++    if (config == NULL)
++        config = to_free = app_load_config_quiet("/usr/share/defaults/ssl/openssl.cnf");
+     if (config == NULL)
+         return 1;
+ 
+diff --git a/apps/openssl.c b/apps/openssl.c
+index a872e2c..82738ae 100644
+--- a/apps/openssl.c
++++ b/apps/openssl.c
+@@ -114,7 +114,12 @@ static char *make_config_name(void)
+ #endif
+     strcat(p, OPENSSL_CONF);
+ 
+-    return p;
++    if (access(p, R_OK) == 0)
++        return p;
++
++    free(p);
++
++    return strdup("/usr/share/defaults/ssl/openssl.cnf");
+ }
+ 
+ int main(int argc, char *argv[])
+diff --git a/include/internal/cryptlib.h b/include/internal/cryptlib.h
+index a608735..0a6ad7c 100644
+--- a/include/internal/cryptlib.h
++++ b/include/internal/cryptlib.h
+@@ -55,8 +55,13 @@ DEFINE_LHASH_OF(MEM);
+ 
+ # ifndef OPENSSL_SYS_VMS
+ #  define X509_CERT_AREA          OPENSSLDIR
+-#  define X509_CERT_DIR           OPENSSLDIR "/certs"
+-#  define X509_CERT_FILE          OPENSSLDIR "/cert.pem"
++/* Misleading, but the X509_CERT_AREA is used in places to fetch configs
++ * and should remain set to /etc/ssl. We modify the path to the cert
++ * areas instead to point to the cache location
++ */
++#  define CACHE_CERT_AREA         "/var/cache/ca-certs"
++#  define X509_CERT_DIR           CACHE_CERT_AREA "/certs"
++#  define X509_CERT_FILE          CACHE_CERT_AREA "/compat/ca-roots.pem"
+ #  define X509_PRIVATE_DIR        OPENSSLDIR "/private"
+ #  define CTLOG_FILE              OPENSSLDIR "/ct_log_list.cnf"
+ # else
+-- 
+2.19.1
+

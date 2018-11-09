@@ -1,7 +1,7 @@
-From 4d7765d26f932a38eaab3482c679dd00a031ed66 Mon Sep 17 00:00:00 2001
+From bb2e1c7711bdb9698420d4d01d2689a89b687325 Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Sat, 3 Nov 2018 20:31:44 -0700
-Subject: [PATCH] Hide a symbol from Steam.
+Subject: [PATCH 2/3] Hide a symbol from Steam.
 
 ---
  crypto/x86_64cpuid.pl | 1 +
