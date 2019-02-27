@@ -1,11 +1,11 @@
 Name:           openssl
-Version:        1.1.1a
-Release:        81
+Version:        1.1.1b
+Release:        82
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
 Group:          libs/network
-Source0:        http://www.openssl.org/source/openssl-1.1.1a.tar.gz
+Source0:        http://www.openssl.org/source/openssl-1.1.1b.tar.gz
 BuildRequires:  zlib-dev
 BuildRequires:  zlib-dev32
 BuildRequires:  util-linux-extras
@@ -88,7 +88,7 @@ Secure Socket Layer.
 %patch2 -p1
 %patch3 -p1
 pushd ..
-cp -a openssl-1.1.1a build32
+cp -a openssl-1.1.1b build32
 popd
 
 
