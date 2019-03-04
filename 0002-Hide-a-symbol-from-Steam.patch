@@ -1,4 +1,4 @@
-From bb2e1c7711bdb9698420d4d01d2689a89b687325 Mon Sep 17 00:00:00 2001
+From 220e98c74bbefffd4029087ba53b2f3ad0997494 Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Sat, 3 Nov 2018 20:31:44 -0700
 Subject: [PATCH 2/3] Hide a symbol from Steam.
@@ -33,5 +33,5 @@ index d43dda4..493dd5f 100644
  &asm_finish();
  
 -- 
-2.19.1
+2.20.1
 

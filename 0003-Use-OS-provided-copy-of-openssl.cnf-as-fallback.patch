@@ -1,4 +1,4 @@
-From e6415a4e17aefd38cbc3e8ea60e24e59070a3d7c Mon Sep 17 00:00:00 2001
+From cef4904a23c43af439b2d6613a3b18624b9a2716 Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Sat, 3 Nov 2018 20:00:42 -0700
 Subject: [PATCH 3/3] Use OS provided copy of openssl.cnf as fallback.
@@ -9,11 +9,12 @@ will be used and create an error if there is something wrong with them.
 ---
  apps/apps.c                 | 3 +++
  apps/openssl.c              | 7 ++++++-
+ crypto/conf/conf_mod.c      | 7 ++++++-
  include/internal/cryptlib.h | 9 +++++++--
- 3 files changed, 16 insertions(+), 3 deletions(-)
+ 4 files changed, 22 insertions(+), 4 deletions(-)
 
 diff --git a/apps/apps.c b/apps/apps.c
-index 9be6560..b83f739 100644
+index 36cb0b2..cd35ebd 100644
 --- a/apps/apps.c
 +++ b/apps/apps.c
 @@ -502,6 +502,9 @@ int app_load_modules(const CONF *config)
@@ -44,8 +45,34 @@ index a872e2c..82738ae 100644
  }
  
  int main(int argc, char *argv[])
+diff --git a/crypto/conf/conf_mod.c b/crypto/conf/conf_mod.c
+index e703d97..6b005a4 100644
+--- a/crypto/conf/conf_mod.c
++++ b/crypto/conf/conf_mod.c
+@@ -9,6 +9,7 @@
+ 
+ #include "internal/cryptlib.h"
+ #include <stdio.h>
++#include <unistd.h>
+ #include <ctype.h>
+ #include <openssl/crypto.h>
+ #include "internal/conf.h"
+@@ -499,8 +500,12 @@ char *CONF_get1_default_config_file(void)
+         return NULL;
+     BIO_snprintf(file, len + 1, "%s%s%s", X509_get_default_cert_area(),
+                  sep, OPENSSL_CONF);
++    if (access(file, R_OK) == 0)
++        return file;
+ 
+-    return file;
++    free(file);
++
++    return strdup("/usr/share/defaults/ssl/openssl.cnf");
+ }
+ 
+ /*
 diff --git a/include/internal/cryptlib.h b/include/internal/cryptlib.h
-index a608735..0a6ad7c 100644
+index b4d76d5..5dafc2b 100644
 --- a/include/internal/cryptlib.h
 +++ b/include/internal/cryptlib.h
 @@ -55,8 +55,13 @@ DEFINE_LHASH_OF(MEM);
@@ -65,5 +92,5 @@ index a608735..0a6ad7c 100644
  #  define CTLOG_FILE              OPENSSLDIR "/ct_log_list.cnf"
  # else
 -- 
-2.19.1
+2.20.1
 
