@@ -39,9 +39,9 @@ index a872e2c..82738ae 100644
 +    if (access(p, R_OK) == 0)
 +        return p;
 +
-+    free(p);
++    OPENSSL_free(p);
 +
-+    return strdup("/usr/share/defaults/ssl/openssl.cnf");
++    return OPENSSL_strdup("/usr/share/defaults/ssl/openssl.cnf");
  }
  
  int main(int argc, char *argv[])
@@ -65,9 +65,9 @@ index e703d97..6b005a4 100644
 +        return file;
  
 -    return file;
-+    free(file);
++    OPENSSL_free(file);
 +
-+    return strdup("/usr/share/defaults/ssl/openssl.cnf");
++    return OPENSSL_strdup("/usr/share/defaults/ssl/openssl.cnf");
  }
  
  /*
