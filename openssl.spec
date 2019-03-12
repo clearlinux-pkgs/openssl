@@ -1,6 +1,6 @@
 Name:           openssl
 Version:        1.1.1b
-Release:        86
+Release:        87
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
@@ -164,7 +164,7 @@ export LDFLAGS="$LDFLAGS -m32 -fno-lto"
 export CXXFLAGS="$CXXFLAGS -m32 -fno-lto" 
 make  DESTDIR=%{buildroot} MANDIR=/usr/share/man MANSUFFIX=openssl install
 pushd %{buildroot}/usr/lib32/pkgconfig
-for i in *.pc ; do mv $i 32$i ; done
+for i in *.pc ; do cp $i 32$i ; done
 popd
 popd
 
@@ -216,6 +216,9 @@ make test
 /usr/lib32/pkgconfig/32libcrypto.pc
 /usr/lib32/pkgconfig/32libssl.pc
 /usr/lib32/pkgconfig/32openssl.pc
+/usr/lib32/pkgconfig/libcrypto.pc
+/usr/lib32/pkgconfig/libssl.pc
+/usr/lib32/pkgconfig/openssl.pc
 /usr/lib32/libcrypto.a
 /usr/lib32/libssl.a
 
