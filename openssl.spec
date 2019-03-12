@@ -41,7 +41,7 @@ Secure Socket Layer.
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Group:          devel
-Requires:       %{name} = %{version}-%{release}
+Requires:       openssl = %{version}-%{release}
 Requires:       openssl-lib
 
 %description dev
@@ -51,7 +51,7 @@ Secure Socket Layer.
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Group:          devel
-Requires:       %{name} = %{version}-%{release}
+Requires:       openssl = %{version}-%{release}
 Requires:       openssl-lib
 Requires:	c_rehash
 
@@ -70,7 +70,7 @@ Secure Socket Layer.
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Group:          devel
-Requires:       %{name} = %{version}-%{release}
+Requires:       openssl = %{version}-%{release}
 Requires:       openssl-lib32
 
 %description dev32
@@ -119,7 +119,7 @@ export FFLAGS="${FFLAGS_GENERATE}"
 export FCFLAGS="${FCFLAGS_GENERATE}" 
 
 ./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3  \
- --prefix=%{_prefix} \
+ --prefix=/usr \
  --openssldir=/etc/ssl \
  --libdir=lib64
 
@@ -137,7 +137,7 @@ export FFLAGS="${FFLAGS_USE}"
 export FCFLAGS="${FCFLAGS_USE}" 
 
 ./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3    \
- --prefix=%{_prefix} \
+ --prefix=/usr \
  --openssldir=/etc/ssl \
  --libdir=lib64
 
@@ -150,7 +150,7 @@ export CFLAGS="$CFLAGS -m32 -fno-lto"
 export LDFLAGS="$LDFLAGS -m32 -fno-lto" 
 export CXXFLAGS="$CXXFLAGS -m32 -fno-lto" 
 i386 ./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3 no-asm  \
- --prefix=%{_prefix} \
+ --prefix=/usr \
  --openssldir=/etc/ssl \
  --libdir=lib32 
 make depend
