@@ -1,11 +1,11 @@
 Name:           openssl
-Version:        1.1.1b
+Version:        1.1.1c
 Release:        88
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
 Group:          libs/network
-Source0:        http://www.openssl.org/source/openssl-1.1.1b.tar.gz
+Source0:        http://www.openssl.org/source/openssl-1.1.1c.tar.gz
 BuildRequires:  zlib-dev
 BuildRequires:  zlib-dev32
 BuildRequires:  util-linux-extras
@@ -23,7 +23,6 @@ Patch1: 0001-Use-clearlinux-CFLAGS-during-build.patch
 Patch2: 0002-Hide-a-symbol-from-Steam.patch
 Patch3: 0003-Use-OS-provided-copy-of-openssl.cnf-as-fallback.patch
 
-Patch100: CVE-2019-1543.patch
 
 %description
 Secure Socket Layer.
@@ -90,10 +89,9 @@ Secure Socket Layer.
 %patch2 -p1
 %patch3 -p1
 
-%patch100 -p1
 
 pushd ..
-cp -a openssl-1.1.1b build32
+cp -a openssl-1.1.1c build32
 popd
 
 
