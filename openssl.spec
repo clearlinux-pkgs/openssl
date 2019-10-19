@@ -1,6 +1,6 @@
 Name:           openssl
 Version:        1.1.1d
-Release:        90
+Release:        91
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
@@ -15,6 +15,7 @@ BuildRequires:  gcc-libgcc32
 BuildRequires:  gcc-libstdc++32
 BuildRequires:  glibc-dev32
 BuildRequires:  glibc-libc32
+BuildRequires:  perl(Test::More)
 
 Requires:       ca-certs
 Requires:       p11-kit
