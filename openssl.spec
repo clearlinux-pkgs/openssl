@@ -1,11 +1,11 @@
 Name:           openssl
-Version:        1.1.1d
+Version:        1.1.1e
 Release:        92
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
 Group:          libs/network
-Source0:        https://www.openssl.org/source/openssl-1.1.1d.tar.gz
+Source0:        https://www.openssl.org/source/openssl-1.1.1e.tar.gz
 BuildRequires:  zlib-dev
 BuildRequires:  zlib-dev32
 BuildRequires:  util-linux-extras
@@ -23,8 +23,6 @@ Requires:       p11-kit
 Patch1: 0001-Use-clearlinux-CFLAGS-during-build.patch
 Patch2: 0002-Hide-a-symbol-from-Steam.patch
 Patch3: 0003-Use-OS-provided-copy-of-openssl.cnf-as-fallback.patch
-Patch4: 0001-BIO_f_zlib-Properly-handle-BIO_CTRL_PENDING-and.patch
-Patch5: CVE-2019-1551.patch
 
 
 %description
@@ -91,12 +89,10 @@ Secure Socket Layer.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
-%patch5 -p1
 
 
 pushd ..
-cp -a openssl-1.1.1d build32
+cp -a openssl-1.1.1e build32
 popd
 
 
