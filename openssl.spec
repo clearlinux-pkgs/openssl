@@ -1,6 +1,6 @@
 Name:           openssl
 Version:        1.1.1e
-Release:        92
+Release:        93
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
@@ -42,7 +42,7 @@ License:        OpenSSL
 Summary:        Secure Socket Layer
 Group:          devel
 Requires:       openssl = %{version}-%{release}
-Requires:       openssl-lib
+Requires:       openssl-lib = %{version}-%{release}
 
 %description dev
 Secure Socket Layer.
@@ -52,7 +52,7 @@ License:        OpenSSL
 Summary:        Secure Socket Layer
 Group:          devel
 Requires:       openssl = %{version}-%{release}
-Requires:       openssl-lib
+Requires:       openssl-lib = %{version}-%{release}
 Requires:	c_rehash
 
 %description extras
@@ -71,7 +71,7 @@ License:        OpenSSL
 Summary:        Secure Socket Layer
 Group:          devel
 Requires:       openssl = %{version}-%{release}
-Requires:       openssl-lib32
+Requires:       openssl-lib32 = %{version}-%{release}
 
 %description dev32
 Secure Socket Layer.
