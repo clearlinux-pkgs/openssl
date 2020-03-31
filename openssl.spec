@@ -1,11 +1,11 @@
 Name:           openssl
-Version:        1.1.1e
-Release:        93
+Version:        1.1.1f
+Release:        94
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
 Group:          libs/network
-Source0:        https://www.openssl.org/source/openssl-1.1.1e.tar.gz
+Source0:        https://www.openssl.org/source/openssl-1.1.1f.tar.gz
 BuildRequires:  zlib-dev
 BuildRequires:  zlib-dev32
 BuildRequires:  util-linux-extras
@@ -92,7 +92,7 @@ Secure Socket Layer.
 
 
 pushd ..
-cp -a openssl-1.1.1e build32
+cp -a openssl-1.1.1f build32
 popd
 
 
