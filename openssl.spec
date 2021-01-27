@@ -1,11 +1,12 @@
 Name:           openssl
 Version:        1.1.1i
-Release:        95
+Release:        96
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
 Group:          libs/network
 Source0:        https://www.openssl.org/source/openssl-1.1.1i.tar.gz
+Requires:       openssl-doc = %{version}-%{release}
 BuildRequires:  zlib-dev
 BuildRequires:  zlib-dev32
 BuildRequires:  util-linux-extras
