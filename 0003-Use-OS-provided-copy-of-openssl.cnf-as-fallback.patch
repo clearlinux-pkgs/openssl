@@ -1,7 +1,7 @@
-From cef4904a23c43af439b2d6613a3b18624b9a2716 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Sat, 3 Nov 2018 20:00:42 -0700
-Subject: [PATCH 3/3] Use OS provided copy of openssl.cnf as fallback.
+Subject: [PATCH] Use OS provided copy of openssl.cnf as fallback.
 
 This will be used only if OPENSSL_CONF is not set and if
 /etc/openssl.cnf is not found. If either one of those is the case, they
@@ -14,10 +14,10 @@ will be used and create an error if there is something wrong with them.
  4 files changed, 22 insertions(+), 4 deletions(-)
 
 diff --git a/apps/apps.c b/apps/apps.c
-index 36cb0b2..cd35ebd 100644
+index c06241a..ff942cd 100644
 --- a/apps/apps.c
 +++ b/apps/apps.c
-@@ -502,6 +502,9 @@ int app_load_modules(const CONF *config)
+@@ -509,6 +509,9 @@ int app_load_modules(const CONF *config)
  
      if (config == NULL)
          config = to_free = app_load_config_quiet(default_config_file);
@@ -28,10 +28,10 @@ index 36cb0b2..cd35ebd 100644
          return 1;
  
 diff --git a/apps/openssl.c b/apps/openssl.c
-index a872e2c..82738ae 100644
+index ff7b759..90617c9 100644
 --- a/apps/openssl.c
 +++ b/apps/openssl.c
-@@ -114,7 +114,12 @@ static char *make_config_name(void)
+@@ -113,7 +113,12 @@ static char *make_config_name(void)
  #endif
      strcat(p, OPENSSL_CONF);
  
@@ -46,7 +46,7 @@ index a872e2c..82738ae 100644
  
  int main(int argc, char *argv[])
 diff --git a/crypto/conf/conf_mod.c b/crypto/conf/conf_mod.c
-index e703d97..6b005a4 100644
+index e703d97..7d3c7ff 100644
 --- a/crypto/conf/conf_mod.c
 +++ b/crypto/conf/conf_mod.c
 @@ -9,6 +9,7 @@
@@ -72,7 +72,7 @@ index e703d97..6b005a4 100644
  
  /*
 diff --git a/include/internal/cryptlib.h b/include/internal/cryptlib.h
-index b4d76d5..5dafc2b 100644
+index 6e7291a..a8690a6 100644
 --- a/include/internal/cryptlib.h
 +++ b/include/internal/cryptlib.h
 @@ -55,8 +55,13 @@ DEFINE_LHASH_OF(MEM);
@@ -91,6 +91,3 @@ index b4d76d5..5dafc2b 100644
  #  define X509_PRIVATE_DIR        OPENSSLDIR "/private"
  #  define CTLOG_FILE              OPENSSLDIR "/ct_log_list.cnf"
  # else
--- 
-2.20.1
-
