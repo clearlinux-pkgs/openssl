@@ -19,7 +19,7 @@ index 8dc3e85..67470e9 100644
          bn_ops           => "SIXTY_FOUR_BIT_LONG RC4_CHAR",
      },
  
-@@ -759,6 +760,7 @@ my %targets = (
+@@ -766,6 +767,7 @@ my %targets = (
      #### machines where gcc doesn't understand -m32 and -m64
      "linux-elf" => {
          inherit_from     => [ "linux-generic32", asm("x86_elf_asm") ],
