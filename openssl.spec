@@ -94,13 +94,14 @@ Secure Socket Layer.
 
 pushd ..
 cp -a openssl-1.1.1l build32
+cp -a openssl-1.1.1l buildavx2
 popd
 
 
 %build
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
-export CFLAGS="$CFLAGS -flto=8 -ffunction-sections -fsemantic-interposition -O3 -falign-functions=32 -falign-loops=32"
+export CFLAGS="$CFLAGS -flto=8 -fsemantic-interposition -O3"
 export CXXFLAGS="$CXXFLAGS -flto=8 -ffunction-sections -fsemantic-interposition -O3 "
 export CXXFLAGS="$CXXFLAGS -flto=8 -fsemantic-interposition -O3 -falign-functions=32  "
 export CFLAGS_GENERATE="$CFLAGS -fprofile-generate -fprofile-dir=/tmp/pgo "
@@ -111,30 +112,8 @@ export CFLAGS_USE="$CFLAGS -fprofile-use -fprofile-dir=/tmp/pgo -fprofile-correc
 export FCFLAGS_USE="$FCFLAGS -fprofile-use -fprofile-dir=/tmp/pgo -fprofile-correction "
 export FFLAGS_USE="$FFLAGS -fprofile-use -fprofile-dir=/tmp/pgo -fprofile-correction "
 export CXXFLAGS_USE="$CXXFLAGS -fprofile-use -fprofile-dir=/tmp/pgo -fprofile-correction "
-
-
-export CFLAGS="${CFLAGS_GENERATE}" 
-export CXXFLAGS="${CXXFLAGS_GENERATE}" 
-export FFLAGS="${FFLAGS_GENERATE}" 
-export FCFLAGS="${FCFLAGS_GENERATE}" 
-
-./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3  \
- --prefix=/usr \
- --openssldir=/etc/ssl \
- --libdir=lib64
-
-make depend
-make
-
-#apps/openssl speed 
-LD_PRELOAD="./libcrypto.so ./libssl.so" apps/openssl speed rsa
-
-make clean
-
-export CFLAGS="${CFLAGS_USE}" 
-export CXXFLAGS="${CXXFLAGS_USE}" 
-export FFLAGS="${FFLAGS_USE}" 
-export FCFLAGS="${FCFLAGS_USE}" 
+export LDFLAGS_GENERATE="$LDFLAGS"
+export LDFLAGS_USE="$LDFLAGS"
 
 ./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3    \
  --prefix=/usr \
@@ -157,6 +136,41 @@ make depend
 make
 popd
 
+pushd ../buildavx2
+export CFLAGS="${CFLAGS_GENERATE} -mno-vzeroupper -march=x86-64-v3" 
+export CXXFLAGS="${CXXFLAGS_GENERATE} -mno-vzeroupper -march=x86-64-v3" 
+export FFLAGS="${FFLAGS_GENERATE}  -mno-vzeroupper -march=x86-64-v3" 
+export FCFLAGS="${FCFLAGS_GENERATE}  -mno-vzeroupper -march=x86-64-v3" 
+export LDFLAGS="${LDFLAGS_GENERATE}"
+./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3  \
+ --prefix=/usr \
+ --openssldir=/etc/ssl \
+ --libdir=lib64
+
+make depend
+make
+
+#apps/openssl speed 
+LD_PRELOAD="./libcrypto.so ./libssl.so" apps/openssl speed rsa sha256 aes
+
+make clean
+
+export CFLAGS="${CFLAGS_USE}  -mno-vzeroupper -march=x86-64-v3" 
+export CXXFLAGS="${CXXFLAGS_USE}  -mno-vzeroupper -march=x86-64-v3" 
+export FFLAGS="${FFLAGS_USE} -mno-vzeroupper -march=x86-64-v3" 
+export FCFLAGS="${FCFLAGS_USE} -mno-vzeroupper -march=x86-64-v3" 
+export LDFLAGS="${LDFLAGS_USA}"
+
+./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3    \
+ --prefix=/usr \
+ --openssldir=/etc/ssl \
+ --libdir=lib64
+
+# parallel build is broken
+make depend
+make
+popd
+
 %install
 
 CFLAGS_ORIG="$CFLAGS"
@@ -173,15 +187,24 @@ for i in *.pc ; do cp $i 32$i ; done
 popd
 popd
 
+pushd ../buildavx2
+export CFLAGS="$CFLAGS_ORIG -flto=auto  -mno-vzeroupper -march=x86-64-v3 "
+export LDFLAGS="$LDFLAGS_ORIG  -flto=auto  -mno-vzeroupper -march=x86-64-v3 "
+export CXXFLAGS="$CXXFLAGS_ORIG  -flto=auto  -mno-vzeroupper -march=x86-64-v3 "
+make  DESTDIR=%{buildroot}-v3 MANDIR=/usr/share/man MANSUFFIX=openssl install
+popd
+
 export CFLAGS="$CFLAGS_ORIG -m64 -flto"
 export LDFLAGS="$LDFLAGS_ORIG -m64 -flto"
 export CXXFLAGS="$CXXFLAGS_ORIG -m64 -flto"
 make  DESTDIR=%{buildroot} MANDIR=/usr/share/man MANSUFFIX=openssl install
 
 install -D -m0644 apps/openssl.cnf %{buildroot}/usr/share/defaults/ssl/openssl.cnf
-rm -rf %{buildroot}/etc/ssl
-rm -rf %{buildroot}/usr/lib64/*.a
-rm -rf %{buildroot}/usr/share/doc/openssl/html
+rm -rf %{buildroot}*/etc/ssl
+rm -rf %{buildroot}*/usr/lib64/*.a
+rm -rf %{buildroot}*/usr/share/doc/openssl/html
+
+/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot}/usr/share/clear/optimized-elf/ %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 
 %check
 make test
@@ -196,6 +219,7 @@ make test
 /usr/lib64/engines-1.1/afalg.so
 /usr/lib64/engines-1.1/capi.so
 /usr/lib64/engines-1.1/padlock.so
+/usr/share/clear/*
 
 %files lib32
 /usr/lib32/libcrypto.so.1.1
