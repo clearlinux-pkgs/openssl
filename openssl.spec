@@ -159,7 +159,7 @@ export CFLAGS="${CFLAGS_USE}  -mno-vzeroupper -march=x86-64-v3"
 export CXXFLAGS="${CXXFLAGS_USE}  -mno-vzeroupper -march=x86-64-v3" 
 export FFLAGS="${FFLAGS_USE} -mno-vzeroupper -march=x86-64-v3" 
 export FCFLAGS="${FCFLAGS_USE} -mno-vzeroupper -march=x86-64-v3" 
-export LDFLAGS="${LDFLAGS_USA}"
+export LDFLAGS="${LDFLAGS_USE}"
 
 ./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3    \
  --prefix=/usr \
