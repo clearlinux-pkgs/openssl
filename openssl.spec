@@ -1,11 +1,11 @@
 Name:           openssl
-Version:        1.1.1o
+Version:        1.1.1p
 Release:        101
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
 Group:          libs/network
-Source0:        https://www.openssl.org/source/openssl-1.1.1o.tar.gz
+Source0:        https://www.openssl.org/source/openssl-1.1.1p.tar.gz
 Requires:       openssl-doc = %{version}-%{release}
 BuildRequires:  zlib-dev
 BuildRequires:  zlib-dev32
@@ -93,8 +93,8 @@ Secure Socket Layer.
 
 
 pushd ..
-cp -a openssl-1.1.1o build32
-cp -a openssl-1.1.1o buildavx2
+cp -a openssl-1.1.1p build32
+cp -a openssl-1.1.1p buildavx2
 popd
 
 
