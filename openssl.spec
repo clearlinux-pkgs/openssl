@@ -1,6 +1,6 @@
 Name:           openssl
 Version:        1.1.1p
-Release:        101
+Release:        102
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
@@ -204,22 +204,25 @@ rm -rf %{buildroot}*/etc/ssl
 rm -rf %{buildroot}*/usr/lib64/*.a
 rm -rf %{buildroot}*/usr/share/doc/openssl/html
 
-/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot}/usr/share/clear/optimized-elf/ %{buildroot}/usr/share/clear/filemap/filemap-%{name}
+/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot} %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 
 %check
 make test
 
 %files
 /usr/bin/openssl
+/usr/share/clear/filemap/filemap-openssl
+/usr/share/clear/optimized-elf/bin*
 /usr/share/defaults/ssl/openssl.cnf
 
 %files lib
+/usr/lib64/glibc-hwcaps/x86-64-v3/libcrypto.so.1.1
+/usr/lib64/glibc-hwcaps/x86-64-v3/libssl.so.1.1
 /usr/lib64/libcrypto.so.1.1
 /usr/lib64/libssl.so.1.1
 /usr/lib64/engines-1.1/afalg.so
 /usr/lib64/engines-1.1/capi.so
 /usr/lib64/engines-1.1/padlock.so
-/usr/share/clear/*
 
 %files lib32
 /usr/lib32/libcrypto.so.1.1
@@ -230,6 +233,8 @@ make test
 
 %files dev
 /usr/include/openssl/*.h
+/usr/lib64/glibc-hwcaps/x86-64-v3/libcrypto.so
+/usr/lib64/glibc-hwcaps/x86-64-v3/libssl.so
 /usr/lib64/libcrypto.so
 /usr/lib64/libssl.so
 /usr/lib64/pkgconfig/libcrypto.pc
