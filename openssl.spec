@@ -1,12 +1,13 @@
 Name:           openssl
 Version:        1.1.1p
-Release:        102
+Release:        103
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
 Group:          libs/network
 Source0:        https://www.openssl.org/source/openssl-1.1.1p.tar.gz
 Requires:       openssl-doc = %{version}-%{release}
+Requires:       openssl-filemap = %{version}-%{release}
 BuildRequires:  zlib-dev
 BuildRequires:  zlib-dev32
 BuildRequires:  util-linux-extras
@@ -33,6 +34,7 @@ Secure Socket Layer.
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Group:          libs/network
+Requires:       openssl-filemap = %{version}-%{release}
 Requires:       p11-kit
 
 %description lib
@@ -58,6 +60,13 @@ Requires:	c_rehash
 
 %description extras
 Secure Socket Layer.
+
+%package filemap
+Summary: filemap components for the openssl package.
+Group: Default
+
+%description filemap
+filemap components for the openssl package.
 
 %package lib32
 License:        OpenSSL
@@ -211,7 +220,6 @@ make test
 
 %files
 /usr/bin/openssl
-/usr/share/clear/filemap/filemap-openssl
 /usr/share/clear/optimized-elf/bin*
 /usr/share/defaults/ssl/openssl.cnf
 
@@ -223,6 +231,7 @@ make test
 /usr/lib64/engines-1.1/afalg.so
 /usr/lib64/engines-1.1/capi.so
 /usr/lib64/engines-1.1/padlock.so
+/usr/share/clear/optimized-elf/other*
 
 %files lib32
 /usr/lib32/libcrypto.so.1.1
@@ -243,6 +252,10 @@ make test
 
 %files extras
 %exclude /usr/bin/c_rehash
+
+%files filemap
+%defattr(-,root,root,-)
+/usr/share/clear/filemap/filemap-openssl
 
 %files dev32
 /usr/lib32/libcrypto.so
