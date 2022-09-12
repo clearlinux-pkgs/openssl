@@ -13,38 +13,6 @@ will be used and create an error if there is something wrong with them.
  include/internal/cryptlib.h | 9 +++++++--
  4 files changed, 22 insertions(+), 4 deletions(-)
 
-diff --git a/apps/apps.c b/apps/apps.c
-index c06241a..ff942cd 100644
---- a/apps/apps.c
-+++ b/apps/apps.c
-@@ -509,6 +509,9 @@ int app_load_modules(const CONF *config)
- 
-     if (config == NULL)
-         config = to_free = app_load_config_quiet(default_config_file);
-+    /* clearlinux: use OS defaults if no explicit or /etc/ cnf found */
-+    if (config == NULL)
-+        config = to_free = app_load_config_quiet("/usr/share/defaults/ssl/openssl.cnf");
-     if (config == NULL)
-         return 1;
- 
-diff --git a/apps/openssl.c b/apps/openssl.c
-index ff7b759..90617c9 100644
---- a/apps/openssl.c
-+++ b/apps/openssl.c
-@@ -113,7 +113,12 @@ static char *make_config_name(void)
- #endif
-     strcat(p, OPENSSL_CONF);
- 
--    return p;
-+    if (access(p, R_OK) == 0)
-+        return p;
-+
-+    OPENSSL_free(p);
-+
-+    return OPENSSL_strdup("/usr/share/defaults/ssl/openssl.cnf");
- }
- 
- int main(int argc, char *argv[])
 diff --git a/crypto/conf/conf_mod.c b/crypto/conf/conf_mod.c
 index e703d97..7d3c7ff 100644
 --- a/crypto/conf/conf_mod.c
@@ -57,20 +25,6 @@ index e703d97..7d3c7ff 100644
  #include <ctype.h>
  #include <openssl/crypto.h>
  #include "internal/conf.h"
-@@ -499,8 +500,12 @@ char *CONF_get1_default_config_file(void)
-         return NULL;
-     BIO_snprintf(file, len + 1, "%s%s%s", X509_get_default_cert_area(),
-                  sep, OPENSSL_CONF);
-+    if (access(file, R_OK) == 0)
-+        return file;
- 
--    return file;
-+    OPENSSL_free(file);
-+
-+    return OPENSSL_strdup("/usr/share/defaults/ssl/openssl.cnf");
- }
- 
- /*
 diff --git a/include/internal/cryptlib.h b/include/internal/cryptlib.h
 index 6e7291a..a8690a6 100644
 --- a/include/internal/cryptlib.h
@@ -91,3 +45,29 @@ index 6e7291a..a8690a6 100644
  #  define X509_PRIVATE_DIR        OPENSSLDIR "/private"
  #  define CTLOG_FILE              OPENSSLDIR "/ct_log_list.cnf"
  # else
+--- openssl-3.0.5/crypto/conf/conf_mod.c~	2022-07-05 08:57:04.000000000 +0000
++++ openssl-3.0.5/crypto/conf/conf_mod.c	2022-09-11 19:36:20.682992501 +0000
+@@ -641,8 +641,10 @@
+     if (file == NULL)
+         return NULL;
+     BIO_snprintf(file, size, "%s%s%s", t, sep, OPENSSL_CONF);
+-
+-    return file;
++    if (access(file, R_OK) == 0)
++	return file;
++    OPENSSL_free(file);
++    return OPENSSL_strdup("/usr/share/defaults/ssl/openssl.cnf");
+ }
+ 
+ /*
+--- openssl-3.0.5/apps/lib/apps.c~	2022-07-05 08:57:04.000000000 +0000
++++ openssl-3.0.5/apps/lib/apps.c	2022-09-11 19:42:36.761669443 +0000
+@@ -403,6 +403,8 @@
+     if (config == NULL)
+         config = to_free = app_load_config_quiet(default_config_file);
+     if (config == NULL)
++	config = to_free = app_load_config_quiet("/usr/share/defaults/ssl/openssl.cnf");
++    if (config == NULL)
+         return 1;
+ 
+     if (CONF_modules_load(config, NULL, 0) <= 0) {

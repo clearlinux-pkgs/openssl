@@ -1,11 +1,11 @@
 Name:           openssl
-Version:        1.1.1q
+Version:        3.0.5
 Release:        106
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
 Group:          libs/network
-Source0:        https://www.openssl.org/source/openssl-1.1.1q.tar.gz
+Source0:        https://www.openssl.org/source/openssl-3.0.5.tar.gz
 Requires:       openssl-doc = %{version}-%{release}
 Requires:       openssl-filemap = %{version}-%{release}
 BuildRequires:  zlib-dev
@@ -102,17 +102,17 @@ Secure Socket Layer.
 
 
 pushd ..
-cp -a openssl-1.1.1q build32
-cp -a openssl-1.1.1q buildavx2
+cp -a openssl-3.0.5 build32
+cp -a openssl-3.0.5 buildavx2
 popd
 
 
 %build
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
-export CFLAGS="$CFLAGS -flto=8 -fsemantic-interposition -O3"
-export CXXFLAGS="$CXXFLAGS -flto=8 -ffunction-sections -fsemantic-interposition -O3 "
-export CXXFLAGS="$CXXFLAGS -flto=8 -fsemantic-interposition -O3 -falign-functions=32  "
+export CFLAGS="$CFLAGS -flto=auto -fno-semantic-interposition -O3"
+export CXXFLAGS="$CXXFLAGS -flto=auto -ffunction-sections -fno-semantic-interposition -O3 "
+export CXXFLAGS="$CXXFLAGS -flto=auto -fno-semantic-interposition -O3 -falign-functions=32  "
 export CFLAGS_GENERATE="$CFLAGS -fprofile-generate -fprofile-dir=/tmp/pgo "
 export FCFLAGS_GENERATE="$FCFLAGS -fprofile-generate -fprofile-dir=/tmp/pgo "
 export FFLAGS_GENERATE="$FFLAGS -fprofile-generate -fprofile-dir=/tmp/pgo "
@@ -224,21 +224,26 @@ make test
 /usr/share/defaults/ssl/openssl.cnf
 
 %files lib
-/usr/lib64/glibc-hwcaps/x86-64-v3/libcrypto.so.1.1
-/usr/lib64/glibc-hwcaps/x86-64-v3/libssl.so.1.1
-/usr/lib64/libcrypto.so.1.1
-/usr/lib64/libssl.so.1.1
-/usr/lib64/engines-1.1/afalg.so
-/usr/lib64/engines-1.1/capi.so
-/usr/lib64/engines-1.1/padlock.so
+/usr/lib64/glibc-hwcaps/x86-64-v3/libcrypto.so.3
+/usr/lib64/glibc-hwcaps/x86-64-v3/libssl.so.3
+/usr/lib64/libcrypto.so.3
+/usr/lib64/libssl.so.3
+/usr/lib64/engines-3/afalg.so
+/usr/lib64/engines-3/capi.so
+/usr/lib64/engines-3/padlock.so
+/usr/lib64/engines-3/loader_attic.so
+/usr/lib64/ossl-modules/legacy.so
+
 /usr/share/clear/optimized-elf/other*
 
 %files lib32
-/usr/lib32/libcrypto.so.1.1
-/usr/lib32/libssl.so.1.1
-/usr/lib32/engines-1.1/afalg.so
-/usr/lib32/engines-1.1/capi.so
-/usr/lib32/engines-1.1/padlock.so
+/usr/lib32/libcrypto.so.3
+/usr/lib32/libssl.so.3
+/usr/lib32/engines-3/afalg.so
+/usr/lib32/engines-3/capi.so
+/usr/lib32/engines-3/padlock.so
+/usr/lib32/engines-3/loader_attic.so
+/usr/lib32/ossl-modules/legacy.so
 
 %files dev
 /usr/include/openssl/*.h
