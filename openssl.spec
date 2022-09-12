@@ -6,7 +6,6 @@ Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
 Group:          libs/network
 Source0:        https://www.openssl.org/source/openssl-3.0.5.tar.gz
-Requires:       openssl-doc = %{version}-%{release}
 Requires:       openssl-filemap = %{version}-%{release}
 BuildRequires:  zlib-dev
 BuildRequires:  zlib-dev32
