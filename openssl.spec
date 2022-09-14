@@ -150,7 +150,7 @@ export CXXFLAGS="${CXXFLAGS_GENERATE} -mno-vzeroupper -march=x86-64-v3"
 export FFLAGS="${FFLAGS_GENERATE}  -mno-vzeroupper -march=x86-64-v3" 
 export FCFLAGS="${FCFLAGS_GENERATE}  -mno-vzeroupper -march=x86-64-v3" 
 export LDFLAGS="${LDFLAGS_GENERATE}"
-./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3  \
+./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3 enable-ktls  \
  --prefix=/usr \
  --openssldir=/etc/ssl \
  --libdir=lib64
@@ -169,7 +169,7 @@ export FFLAGS="${FFLAGS_USE} -mno-vzeroupper -march=x86-64-v3"
 export FCFLAGS="${FCFLAGS_USE} -mno-vzeroupper -march=x86-64-v3" 
 export LDFLAGS="${LDFLAGS_USE}"
 
-./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3    \
+./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3 enable-ktls    \
  --prefix=/usr \
  --openssldir=/etc/ssl \
  --libdir=lib64
