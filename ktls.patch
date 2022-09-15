@@ -1,0 +1,23 @@
+--- openssl-3.0.5/Configure~	2022-07-05 08:57:04.000000000 +0000
++++ openssl-3.0.5/Configure	2022-09-15 16:36:05.673631842 +0000
+@@ -1725,10 +1725,6 @@
+         }
+         my $minver = (4 << 16) + (13 << 8) + 0;
+         my @verstr = split(" ",`cat $usr/include/linux/version.h | grep LINUX_VERSION_CODE`);
+-
+-        if ($verstr[2] < $minver) {
+-            disable('too-old-kernel', 'ktls');
+-        }
+     } elsif ($target =~ m/^BSD/) {
+         my $cc = $config{CROSS_COMPILE}.$config{CC};
+         system("printf '#include <sys/types.h>\n#include <sys/ktls.h>' | $cc -E - >/dev/null 2>&1");
+--- openssl-3.0.5/Configure~	2022-09-15 16:36:05.000000000 +0000
++++ openssl-3.0.5/Configure	2022-09-15 17:44:34.188746970 +0000
+@@ -545,7 +545,6 @@
+                   "external-tests"      => "default",
+                   "fuzz-afl"            => "default",
+                   "fuzz-libfuzzer"      => "default",
+-                  "ktls"                => "default",
+                   "md2"                 => "default",
+                   "msan"                => "default",
+                   "rc5"                 => "default",
