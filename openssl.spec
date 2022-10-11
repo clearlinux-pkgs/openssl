@@ -24,7 +24,6 @@ Requires:       p11-kit
 Patch1: 0001-Use-clearlinux-CFLAGS-during-build.patch
 Patch2: 0002-Hide-a-symbol-from-Steam.patch
 Patch3: 0003-Use-OS-provided-copy-of-openssl.cnf-as-fallback.patch
-Patch4: ktls.patch
 
 
 %description
@@ -99,7 +98,6 @@ Secure Socket Layer.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
 
 pushd ..
 cp -a openssl-3.0.6 build32
