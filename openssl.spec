@@ -1,11 +1,11 @@
 Name:           openssl
-Version:        3.0.5
+Version:        3.0.6
 Release:        108
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
 Group:          libs/network
-Source0:        https://www.openssl.org/source/openssl-3.0.5.tar.gz
+Source0:        https://www.openssl.org/source/openssl-3.0.6.tar.gz
 Requires:       openssl-filemap = %{version}-%{release}
 BuildRequires:  zlib-dev
 BuildRequires:  zlib-dev32
@@ -102,8 +102,8 @@ Secure Socket Layer.
 %patch4 -p1
 
 pushd ..
-cp -a openssl-3.0.5 build32
-cp -a openssl-3.0.5 buildavx2
+cp -a openssl-3.0.6 build32
+cp -a openssl-3.0.6 buildavx2
 popd
 
 
