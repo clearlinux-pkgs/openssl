@@ -100,8 +100,8 @@ Secure Socket Layer.
 %patch3 -p1
 
 pushd ..
-cp -a openssl-3.0.5 build32
-cp -a openssl-3.0.5 buildavx2
+cp -a openssl-3.0.7 build32
+cp -a openssl-3.0.7  buildavx2
 popd
 
 
