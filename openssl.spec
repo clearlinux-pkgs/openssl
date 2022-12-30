@@ -17,6 +17,9 @@ BuildRequires:  gcc-libstdc++32
 BuildRequires:  glibc-dev32
 BuildRequires:  glibc-libc32
 BuildRequires:  perl(Test::More)
+%define debug_package %{nil}
+%define __strip /bin/true
+
 
 Requires:       ca-certs
 Requires:       p11-kit
@@ -108,8 +111,8 @@ popd
 %build
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
-export CFLAGS="$CFLAGS -flto=auto -fno-semantic-interposition -O3 -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=3"
-export CXXFLAGS="$CXXFLAGS -flto=auto -ffunction-sections -fno-semantic-interposition -O3 "
+export CFLAGS="$CFLAGS -flto=auto -fno-semantic-interposition -O3 -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=3 -gno-variable-location-views -gno-column-info -femit-struct-debug-baseonly -gz "
+export CXXFLAGS="$CXXFLAGS -flto=auto -ffunction-sections -fno-semantic-interposition -O3 -gno-variable-location-views -gno-column-info -femit-struct-debug-baseonly -gz "
 export CXXFLAGS="$CXXFLAGS -flto=auto -fno-semantic-interposition -O3 -falign-functions=32  "
 export CFLAGS_GENERATE="$CFLAGS -fprofile-generate -fprofile-dir=/tmp/pgo "
 export FCFLAGS_GENERATE="$FCFLAGS -fprofile-generate -fprofile-dir=/tmp/pgo "
@@ -144,10 +147,10 @@ make
 popd
 
 pushd ../buildavx2
-export CFLAGS="${CFLAGS_GENERATE} -mno-vzeroupper -march=x86-64-v3" 
-export CXXFLAGS="${CXXFLAGS_GENERATE} -mno-vzeroupper -march=x86-64-v3" 
-export FFLAGS="${FFLAGS_GENERATE}  -mno-vzeroupper -march=x86-64-v3" 
-export FCFLAGS="${FCFLAGS_GENERATE}  -mno-vzeroupper -march=x86-64-v3" 
+export CFLAGS="${CFLAGS_GENERATE}  -march=x86-64-v3" 
+export CXXFLAGS="${CXXFLAGS_GENERATE}  -march=x86-64-v3" 
+export FFLAGS="${FFLAGS_GENERATE}   -march=x86-64-v3" 
+export FCFLAGS="${FCFLAGS_GENERATE}   -march=x86-64-v3" 
 export LDFLAGS="${LDFLAGS_GENERATE}"
 ./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3 enable-ktls  \
  --prefix=/usr \
@@ -162,10 +165,10 @@ LD_PRELOAD="./libcrypto.so ./libssl.so" apps/openssl speed rsa sha256 aes
 
 make clean
 
-export CFLAGS="${CFLAGS_USE}  -mno-vzeroupper -march=x86-64-v3" 
-export CXXFLAGS="${CXXFLAGS_USE}  -mno-vzeroupper -march=x86-64-v3" 
-export FFLAGS="${FFLAGS_USE} -mno-vzeroupper -march=x86-64-v3" 
-export FCFLAGS="${FCFLAGS_USE} -mno-vzeroupper -march=x86-64-v3" 
+export CFLAGS="${CFLAGS_USE}   -march=x86-64-v3" 
+export CXXFLAGS="${CXXFLAGS_USE}   -march=x86-64-v3" 
+export FFLAGS="${FFLAGS_USE}  -march=x86-64-v3" 
+export FCFLAGS="${FCFLAGS_USE}  -march=x86-64-v3" 
 export LDFLAGS="${LDFLAGS_USE}"
 
 ./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3 enable-ktls    \
@@ -195,9 +198,9 @@ popd
 popd
 
 pushd ../buildavx2
-export CFLAGS="$CFLAGS_ORIG -flto=auto  -mno-vzeroupper -march=x86-64-v3 "
-export LDFLAGS="$LDFLAGS_ORIG  -flto=auto  -mno-vzeroupper -march=x86-64-v3 "
-export CXXFLAGS="$CXXFLAGS_ORIG  -flto=auto  -mno-vzeroupper -march=x86-64-v3 "
+export CFLAGS="$CFLAGS_ORIG -flto=auto  -march=x86-64-v3 "
+export LDFLAGS="$LDFLAGS_ORIG  -flto=auto   -march=x86-64-v3 "
+export CXXFLAGS="$CXXFLAGS_ORIG  -flto=auto  -march=x86-64-v3 "
 make  DESTDIR=%{buildroot}-v3 MANDIR=/usr/share/man MANSUFFIX=openssl install
 popd
 
