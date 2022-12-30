@@ -111,8 +111,8 @@ popd
 %build
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
-export CFLAGS="$CFLAGS -flto=auto -fno-semantic-interposition -O3 -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=3 -gno-variable-location-views -gno-column-info -femit-struct-debug-baseonly -gz "
-export CXXFLAGS="$CXXFLAGS -flto=auto -ffunction-sections -fno-semantic-interposition -O3 -gno-variable-location-views -gno-column-info -femit-struct-debug-baseonly -gz "
+export CFLAGS="$CFLAGS -flto=auto -fno-semantic-interposition -O3 -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=3 -gno-variable-location-views -gno-column-info -femit-struct-debug-baseonly -gz -g1"
+export CXXFLAGS="$CXXFLAGS -flto=auto -ffunction-sections -fno-semantic-interposition -O3 -gno-variable-location-views -gno-column-info -femit-struct-debug-baseonly -gz -g1"
 export CXXFLAGS="$CXXFLAGS -flto=auto -fno-semantic-interposition -O3 -falign-functions=32  "
 export CFLAGS_GENERATE="$CFLAGS -fprofile-generate -fprofile-dir=/tmp/pgo "
 export FCFLAGS_GENERATE="$FCFLAGS -fprofile-generate -fprofile-dir=/tmp/pgo "
