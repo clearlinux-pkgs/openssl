@@ -1,6 +1,6 @@
 Name:           openssl
 Version:        3.1.0
-Release:        117
+Release:        118
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
