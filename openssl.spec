@@ -125,7 +125,7 @@ export CXXFLAGS_USE="$CXXFLAGS -fprofile-use -fprofile-dir=/tmp/pgo -fprofile-co
 export LDFLAGS_GENERATE="$LDFLAGS"
 export LDFLAGS_USE="$LDFLAGS"
 
-./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3    \
+./config shared no-ssl zlib-dynamic no-ssl2 no-ssl3    \
  --prefix=/usr \
  --openssldir=/etc/ssl \
  --libdir=lib64
@@ -138,7 +138,7 @@ pushd ../build32
 export CFLAGS="$CFLAGS -m32 -fno-lto -mstackrealign"
 export LDFLAGS="$LDFLAGS -m32 -fno-lto -mstackrealign"
 export CXXFLAGS="$CXXFLAGS -m32 -fno-lto -mstackrealign"
-i386 ./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3 no-asm  \
+i386 ./config shared no-ssl zlib-dynamic no-ssl2 no-ssl3 no-asm  \
  --prefix=/usr \
  --openssldir=/etc/ssl \
  --libdir=lib32 
@@ -152,7 +152,7 @@ export CXXFLAGS="${CXXFLAGS_GENERATE}  -march=x86-64-v3"
 export FFLAGS="${FFLAGS_GENERATE}   -march=x86-64-v3" 
 export FCFLAGS="${FCFLAGS_GENERATE}   -march=x86-64-v3" 
 export LDFLAGS="${LDFLAGS_GENERATE}"
-./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3 enable-ktls  \
+./config shared no-ssl zlib-dynamic no-ssl2 no-ssl3 enable-ktls  \
  --prefix=/usr \
  --openssldir=/etc/ssl \
  --libdir=lib64
@@ -171,7 +171,7 @@ export FFLAGS="${FFLAGS_USE}  -march=x86-64-v3"
 export FCFLAGS="${FCFLAGS_USE}  -march=x86-64-v3" 
 export LDFLAGS="${LDFLAGS_USE}"
 
-./config shared no-ssl zlib-dynamic no-rc4 no-ssl2 no-ssl3 enable-ktls    \
+./config shared no-ssl zlib-dynamic no-ssl2 no-ssl3 enable-ktls    \
  --prefix=/usr \
  --openssldir=/etc/ssl \
  --libdir=lib64
@@ -221,12 +221,10 @@ make test
 
 %files
 /usr/bin/openssl
-/usr/share/clear/optimized-elf/bin*
+/V3/usr/bin/openssl
 /usr/share/defaults/ssl/openssl.cnf
 
 %files lib
-/usr/lib64/glibc-hwcaps/x86-64-v3/libcrypto.so.3
-/usr/lib64/glibc-hwcaps/x86-64-v3/libssl.so.3
 /usr/lib64/libcrypto.so.3
 /usr/lib64/libssl.so.3
 /usr/lib64/engines-3/afalg.so
@@ -234,8 +232,13 @@ make test
 /usr/lib64/engines-3/padlock.so
 /usr/lib64/engines-3/loader_attic.so
 /usr/lib64/ossl-modules/legacy.so
-
-/usr/share/clear/optimized-elf/other*
+/V3/usr/lib64/libcrypto.so.3
+/V3/usr/lib64/libssl.so.3
+/V3/usr/lib64/engines-3/afalg.so
+/V3/usr/lib64/engines-3/capi.so
+/V3/usr/lib64/engines-3/padlock.so
+/V3/usr/lib64/engines-3/loader_attic.so
+/V3/usr/lib64/ossl-modules/legacy.so
 
 %files lib32
 /usr/lib32/libcrypto.so.3
@@ -248,8 +251,8 @@ make test
 
 %files dev
 /usr/include/openssl/*.h
-/usr/lib64/glibc-hwcaps/x86-64-v3/libcrypto.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libssl.so
+/V3/usr/lib64/libcrypto.so
+/V3/usr/lib64/libssl.so
 /usr/lib64/libcrypto.so
 /usr/lib64/libssl.so
 /usr/lib64/pkgconfig/libcrypto.pc
@@ -258,10 +261,6 @@ make test
 
 %files extras
 %exclude /usr/bin/c_rehash
-
-%files filemap
-%defattr(-,root,root,-)
-/usr/share/clear/filemap/filemap-openssl
 
 %files dev32
 /usr/lib32/libcrypto.so
