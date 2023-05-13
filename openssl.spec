@@ -1,6 +1,6 @@
 Name:           openssl
 Version:        3.1.0
-Release:        118
+Release:        119
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
@@ -35,7 +35,6 @@ Secure Socket Layer.
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Group:          libs/network
-Requires:       openssl-filemap = %{version}-%{release}
 Requires:       p11-kit
 
 %description lib
@@ -61,13 +60,6 @@ Requires:	c_rehash
 
 %description extras
 Secure Socket Layer.
-
-%package filemap
-Summary: filemap components for the openssl package.
-Group: Default
-
-%description filemap
-filemap components for the openssl package.
 
 %package lib32
 License:        OpenSSL
