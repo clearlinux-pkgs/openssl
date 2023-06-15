@@ -1,6 +1,6 @@
 Name:           openssl
 Version:        3.1.1
-Release:        120
+Release:        121
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
@@ -242,8 +242,6 @@ make test
 
 %files dev
 /usr/include/openssl/*.h
-/V3/usr/lib64/libcrypto.so
-/V3/usr/lib64/libssl.so
 /usr/lib64/libcrypto.so
 /usr/lib64/libssl.so
 /usr/lib64/pkgconfig/libcrypto.pc
