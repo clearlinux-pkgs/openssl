@@ -1,11 +1,11 @@
 Name:           openssl
-Version:        3.1.1
-Release:        121
+Version:        3.1.2
+Release:        122
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
 Group:          libs/network
-Source0:        https://www.openssl.org/source/openssl-3.1.1.tar.gz
+Source0:        https://www.openssl.org/source/openssl-3.1.2.tar.gz
 BuildRequires:  zlib-dev
 BuildRequires:  zlib-dev32
 BuildRequires:  util-linux-extras
@@ -89,13 +89,13 @@ Secure Socket Layer.
 
 %prep
 %setup -q
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
+%patch -P 1 -p1
+%patch -P 2 -p1
+%patch -P 3 -p1
 
 pushd ..
-cp -a openssl-3.1.1 build32
-cp -a openssl-3.1.1  buildavx2
+cp -a openssl-3.1.2 build32
+cp -a openssl-3.1.2  buildavx2
 popd
 
 
