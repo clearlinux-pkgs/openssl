@@ -25,26 +25,6 @@ index e703d97..7d3c7ff 100644
  #include <ctype.h>
  #include <openssl/crypto.h>
  #include "internal/conf.h"
-diff --git a/include/internal/cryptlib.h b/include/internal/cryptlib.h
-index 6e7291a..a8690a6 100644
---- a/include/internal/cryptlib.h
-+++ b/include/internal/cryptlib.h
-@@ -55,8 +55,13 @@ DEFINE_LHASH_OF(MEM);
- 
- # ifndef OPENSSL_SYS_VMS
- #  define X509_CERT_AREA          OPENSSLDIR
--#  define X509_CERT_DIR           OPENSSLDIR "/certs"
--#  define X509_CERT_FILE          OPENSSLDIR "/cert.pem"
-+/* Misleading, but the X509_CERT_AREA is used in places to fetch configs
-+ * and should remain set to /etc/ssl. We modify the path to the cert
-+ * areas instead to point to the cache location
-+ */
-+#  define CACHE_CERT_AREA         "/var/cache/ca-certs"
-+#  define X509_CERT_DIR           CACHE_CERT_AREA "/certs"
-+#  define X509_CERT_FILE          CACHE_CERT_AREA "/compat/ca-roots.pem"
- #  define X509_PRIVATE_DIR        OPENSSLDIR "/private"
- #  define CTLOG_FILE              OPENSSLDIR "/ct_log_list.cnf"
- # else
 --- openssl-3.0.5/crypto/conf/conf_mod.c~	2022-07-05 08:57:04.000000000 +0000
 +++ openssl-3.0.5/crypto/conf/conf_mod.c	2022-09-11 19:36:20.682992501 +0000
 @@ -641,8 +641,10 @@
@@ -71,3 +51,18 @@ index 6e7291a..a8690a6 100644
          return 1;
  
      if (CONF_modules_load(config, NULL, 0) <= 0) {
+--- openssl-3.2.1/include/internal/common.h~	2024-01-30 13:14:56.000000000 +0000
++++ openssl-3.2.1/include/internal/common.h	2024-01-30 17:51:45.772427721 +0000
+@@ -81,9 +81,10 @@
+ # define OPENSSL_CONF             "openssl.cnf"
+ 
+ # ifndef OPENSSL_SYS_VMS
++#  define CACHE_CERT_AREA         "/var/cache/ca-certs"
+ #  define X509_CERT_AREA          OPENSSLDIR
+-#  define X509_CERT_DIR           OPENSSLDIR "/certs"
+-#  define X509_CERT_FILE          OPENSSLDIR "/cert.pem"
++#  define X509_CERT_DIR           CACHE_CERT_AREA "/certs"
++#  define X509_CERT_FILE          CACHE_CERT_AREA "/compat/ca-roots.pem"
+ #  define X509_PRIVATE_DIR        OPENSSLDIR "/private"
+ #  define CTLOG_FILE              OPENSSLDIR "/ct_log_list.cnf"
+ # else
