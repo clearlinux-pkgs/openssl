@@ -247,7 +247,8 @@ make test
 /usr/lib64/pkgconfig/libcrypto.pc
 /usr/lib64/pkgconfig/libssl.pc
 /usr/lib64/pkgconfig/openssl.pc
-
+/usr/lib64/cmake/OpenSSL/OpenSSLConfig.cmake
+/usr/lib64/cmake/OpenSSL/OpenSSLConfigVersion.cmake
 %files extras
 %exclude /usr/bin/c_rehash
 
@@ -262,6 +263,8 @@ make test
 /usr/lib32/pkgconfig/openssl.pc
 /usr/lib32/libcrypto.a
 /usr/lib32/libssl.a
+/usr/lib32/cmake/OpenSSL/OpenSSLConfig.cmake
+/usr/lib32/cmake/OpenSSL/OpenSSLConfigVersion.cmake
 
 %files doc
 /usr/share/man/man1/*
