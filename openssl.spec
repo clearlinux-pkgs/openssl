@@ -1,11 +1,11 @@
 Name:           openssl
-Version:        3.3.1
-Release:        129
+Version:        3.3.2
+Release:        130
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
 Group:          libs/network
-Source0:        https://www.openssl.org/source/openssl-3.3.1.tar.gz
+Source0:        https://www.openssl.org/source/openssl-3.3.2.tar.gz
 BuildRequires:  zlib-dev
 BuildRequires:  zlib-dev32
 BuildRequires:  util-linux-extras
@@ -26,7 +26,6 @@ Requires:       p11-kit
 Patch1: 0001-Use-clearlinux-CFLAGS-during-build.patch
 Patch2: 0002-Hide-a-symbol-from-Steam.patch
 Patch3: 0003-Use-OS-provided-copy-of-openssl.cnf-as-fallback.patch
-Patch4: 0004-Add-prefix-and-exec_prefix-to-openssl.pc.patch
 
 
 %description
@@ -93,11 +92,10 @@ Secure Socket Layer.
 %patch -P 1 -p1
 %patch -P 2 -p1
 %patch -P 3 -p1
-%patch -P 4 -p1
 
 pushd ..
-cp -a openssl-3.3.1 build32
-cp -a openssl-3.3.1  buildavx2
+cp -a openssl-3.3.2 build32
+cp -a openssl-3.3.2  buildavx2
 popd
 
 
