@@ -1,11 +1,11 @@
 Name:           openssl
-Version:        3.4.0
+Version:        3.4.1
 Release:        132
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
 Group:          libs/network
-Source0:        https://github.com/openssl/openssl/releases/download/openssl-3.4.0/openssl-3.4.0.tar.gz
+Source0:        https://github.com/openssl/openssl/releases/download/openssl-3.4.1/openssl-3.4.1.tar.gz
 BuildRequires:  zlib-dev
 BuildRequires:  zlib-dev32
 BuildRequires:  util-linux-extras
@@ -94,8 +94,8 @@ Secure Socket Layer.
 %patch -P 3 -p1
 
 pushd ..
-cp -a openssl-3.4.0 build32
-cp -a openssl-3.4.0  buildavx2
+cp -a openssl-3.4.1 build32
+cp -a openssl-3.4.1  buildavx2
 popd
 
 
