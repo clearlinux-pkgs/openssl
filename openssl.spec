@@ -202,7 +202,6 @@ make  DESTDIR=%{buildroot} MANDIR=/usr/share/man MANSUFFIX=openssl install
 
 install -D -m0644 apps/openssl.cnf %{buildroot}/usr/share/defaults/ssl/openssl.cnf
 rm -rf %{buildroot}*/etc/ssl
-rm -rf %{buildroot}*/usr/lib64/*.a
 rm -rf %{buildroot}*/usr/share/doc/openssl/html
 
 /usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot} %{buildroot}/usr/share/clear/filemap/filemap-%{name}
@@ -249,6 +248,9 @@ make test
 /usr/lib64/pkgconfig/openssl.pc
 /usr/lib64/cmake/OpenSSL/OpenSSLConfig.cmake
 /usr/lib64/cmake/OpenSSL/OpenSSLConfigVersion.cmake
+/usr/lib64/libcrypto.a
+/usr/lib64/libssl.a
+
 %files extras
 %exclude /usr/bin/c_rehash
 
