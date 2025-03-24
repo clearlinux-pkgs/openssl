@@ -1,6 +1,6 @@
 Name:           openssl
 Version:        3.4.1
-Release:        133
+Release:        134
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Url:            http://www.openssl.org/
@@ -35,7 +35,7 @@ Secure Socket Layer.
 License:        OpenSSL
 Summary:        Secure Socket Layer
 Group:          libs/network
-Requires:       p11-kit
+Requires:       p11-kit-lib
 
 %description lib
 Secure Socket Layer.
